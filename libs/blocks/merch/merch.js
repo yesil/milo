@@ -4,7 +4,7 @@ import {
   createTag,
 } from '../../utils/utils.js';
 
-const VERSION = '1.12.0';
+const VERSION = '1.13.1';
 const WCS = { apiKey: 'wcms-commerce-ims-ro-user-milo' };
 const ENV_PROD = 'prod';
 const CTA_PREFIX = /^CTA +/;
@@ -38,6 +38,26 @@ function omitNullValues(target) {
   }
   return target;
 }
+
+const imsCountryPromise = new Promise((resolve) => {
+  let count = 0;
+  const check = setInterval(() => {
+    count += 1;
+    if (window.adobeIMS) {
+      clearInterval(check);
+      if (window.adobeIMS.isSignedInUser()) {
+        window.adobeIMS.getProfile()
+          .then(({ countryCode }) => resolve(countryCode))
+          .catch(() => resolve());
+      } else {
+        resolve();
+      }
+    } else if (count > 25) {
+      clearInterval(check);
+      resolve();
+    }
+  }, 200);
+});
 
 const getTacocatEnv = (envName, locale) => {
   const wcsLocale = GEO_MAPPINGS[locale.prefix] ?? locale.ietf;
@@ -95,6 +115,12 @@ function buildCheckoutButton(a, osi, options) {
   a.className = 'con-button blue button-m';
   Object.assign(a.dataset, options);
   a.textContent = a.textContent?.replace(CTA_PREFIX, '');
+  imsCountryPromise.then((countryCode) => {
+    if (countryCode) {
+      a.dataset.country = countryCode;
+      a.refresh();
+    }
+  }).catch(() => { /* do nothing */ });
   return a;
 }
 
