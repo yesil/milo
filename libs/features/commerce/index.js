@@ -12,7 +12,7 @@ import Log from './src/log.js';
 import HTMLPlaceholderMixin from './src/placeholder.js';
 import { init, reset } from './src/service.js';
 import { getLocaleSettings, getSettings } from './src/settings.js';
-import { WcsCommitment, WcsErrorMessage, WcsPlanType, WcsTerm } from './src/wcs.js';
+import { WcsCommitment, WcsErrorMessage, WcsPlanType, WcsTerm, getPlanType } from './src/wcs.js';
 
 export {
   CheckoutWorkflow,
@@ -29,6 +29,7 @@ export {
   WcsCommitment,
   WcsPlanType,
   WcsTerm,
+  getPlanType,
   getLocaleSettings,
   getSettings,
   init,

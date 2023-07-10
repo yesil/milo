@@ -40,6 +40,9 @@ class HTMLCheckoutLinkElement extends HTMLAnchorElement {
     this.href = '#';
 
     const { wcsOsi, perpetual } = this.dataset;
+    if (!wcsOsi) {
+      return;
+    }
     let { promotionCode = overrides.promotionCode } = this.dataset;
     promotionCode = computePromoStatus(promotionCode, null).effectivePromoCode;
     const offerSelectorIds = wcsOsi.split(',');

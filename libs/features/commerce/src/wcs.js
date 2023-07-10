@@ -45,14 +45,17 @@ const planTypesMap = [
   [PlanType.PERPETUAL, Commitment.PERPETUAL],
 ];
 
+const getPlanType = (commitment, term) => planTypesMap
+  .find(([, planTypeCommitment, planTypeTerm]) => (
+    commitment === planTypeCommitment && (!term || term === planTypeTerm)
+  ))[0];
+
 /**
  * @param {Omit<Commerce.Wcs.Offer, 'planType'>} offer
  * @returns {Commerce.Wcs.Offer}
  */
 const applyPlanType = (offer) => ({
-  planType: planTypesMap.find(([, commitment, term]) => (
-    commitment === offer.commitment && (!term || term === offer.term)
-  ))[0],
+  planType: getPlanType(offer.commitment, offer.term),
   ...offer,
 });
 
@@ -281,4 +284,5 @@ export {
   Term as WcsTerm,
   Wcs,
   selectOffers,
+  getPlanType,
 };

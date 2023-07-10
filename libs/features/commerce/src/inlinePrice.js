@@ -48,9 +48,11 @@ class HTMLInlinePriceElement extends HTMLSpanElement {
     if (!this.isConnected) return;
 
     const { wcsOsi, perpetual, promotionCode, taxExclusive } = this.dataset;
+    if (!wcsOsi) {
+      return;
+    }
     const version = this.placeholder.togglePending();
     this.innerHTML = '';
-
     const osis = wcsOsi.split(',');
 
     try {

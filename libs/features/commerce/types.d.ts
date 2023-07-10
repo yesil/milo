@@ -1,6 +1,6 @@
 import { CheckoutData, CheckoutType, WorkflowStep } from '@pandora/commerce-checkout-url-builder';
 import { ProviderEnvironment, Landscape, Environment } from '@pandora/data-source-utils';
-import { PriceDetails, ResolvedOffer } from '@pandora/data-models-odm';
+import { Commitment, PriceDetails, ResolvedOffer, Term } from '@pandora/data-models-odm';
 
 // TODO: expose this type from @dexter/tacocat-consonant-templates package
 // type PriceLiterals = import('@dexter/tacocat-consonant-templates').PriceLiterals;
@@ -214,6 +214,7 @@ declare global {
 
     module Wcs {
       type PlanType = 'ABM' | 'PUF' | 'M2M' | 'PERPETUAL';
+
       type Env = Environment;
 
       interface Client {
@@ -236,6 +237,11 @@ declare global {
           promotionCode?: string;
           taxExclusive?: boolean;
         }): Promise<Offer[]>[];
+
+        /**
+         * Returns the plan type for given commitment and term.
+         */
+        getPlanType(commitment: Commitment, term: Term): PlanType;
       }
 
       interface Offer extends ResolvedOffer {
