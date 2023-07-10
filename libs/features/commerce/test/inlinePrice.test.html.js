@@ -38,11 +38,11 @@ describe('HTMLInlinePriceElement', () => {
     // replace `quietFilter` with `consoleAppender` to enable logs in tests
     // to see debug logs in chrome devtools console, set verbose level
     // eslint-disable-next-line import/no-named-as-default-member
-    Log.use(Log.quietFilter);
+    Log.use(Log.consoleAppender);
     await import('../src/inlinePrice.js');
   });
 
-  it.only('renders price', async () => {
+  it('renders price', async () => {
     const inlinePrice = appendInlinePrice('puf');
     await inlinePrice.onceSettled();
     expect(inlinePrice.innerHTML).to.be.html(snapshots.price);
@@ -85,8 +85,8 @@ describe('HTMLInlinePriceElement', () => {
     const HTMLInlinePriceElement = (await import('../src/inlinePrice.js')).default;
     const HTMLPlaceholderMixin = (await import('../src/placeholder.js')).default;
     class HTMLInlineOfferElement extends HTMLInlinePriceElement {
-      renderOffer(offer, overrides) {
-        super.renderOffer(offer, { ...overrides, displayFormatted: false });
+      renderOffers(offers, overrides) {
+        super.renderOffers(offers, { ...overrides, displayFormatted: false });
         const {
           productArrangementCode,
           commitment,
@@ -94,7 +94,7 @@ describe('HTMLInlinePriceElement', () => {
           customerSegment,
           offerType,
           pricePoint,
-        } = offer;
+        } = offers[0];
         const props = [
           productArrangementCode,
           commitment,

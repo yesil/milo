@@ -47,19 +47,22 @@ class HTMLInlinePriceElement extends HTMLSpanElement {
   async render(overrides = {}) {
     if (!this.isConnected) return;
 
-    const { wcsOsi: osi, perpetual, promotionCode, taxExclusive } = this.dataset;
+    const { wcsOsi, perpetual, promotionCode, taxExclusive } = this.dataset;
     const version = this.placeholder.togglePending();
     this.innerHTML = '';
 
+    const osis = wcsOsi.split(',');
+
     try {
-      const [promise] = service.wcs.resolveOfferSelectors({
+      const promises = service.wcs.resolveOfferSelectors({
         perpetual: toBoolean(perpetual),
-        offerSelectorIds: [osi],
+        multiple: osis.length > 1,
+        offerSelectorIds: osis,
         promotionCode: computePromoStatus(promotionCode, null).effectivePromoCode,
         taxExclusive: toBoolean(taxExclusive),
       });
-      const [offer] = await promise;
-      this.renderOffer(offer, overrides, version);
+      const offers = await Promise.all(promises);
+      this.renderOffers(offers.flat(), overrides, version);
     } catch (error) {
       this.innerHTML = '';
       this.placeholder.toggleFailed(version, error);
@@ -69,17 +72,17 @@ class HTMLInlinePriceElement extends HTMLSpanElement {
   // TODO: can be extended to accept array of offers and compute subtotal price
   /**
    * Renders price offer info into this component.
-   * @param {Commerce.Wcs.Offer} offer
+   * @param {Array<Commerce.Wcs.Offer>} offers
    * @param {Record<string, any>} overrides
    */
-  renderOffer(offer, overrides = {}, version = undefined) {
+  renderOffers(offers, overrides = {}, version = undefined) {
     // If called from `render` method that
     // gets version of this component before making async Wcs call,
     // ensures that no another pending operaion was initiated since
     // and that version has not changed.
     // eslint-disable-next-line no-param-reassign
     version ??= this.placeholder.togglePending();
-    if (!this.placeholder.toggleResolved(version)) return;
+    if (!this.placeholder.toggleResolved(offers, version)) return;
     this.innerHTML = '';
     // Collect settings/dataset and construct price options object.
     const { country, language } = service.settings;
@@ -114,8 +117,23 @@ class HTMLInlinePriceElement extends HTMLSpanElement {
     } else {
       method = price;
     }
-    // Use selected method to build HTML for this component.
-    this.innerHTML = method(options, { ...offer, ...offer.priceDetails });
+
+    if (offers.length > 1) {
+      const offer = offers.reduce((prev, currentOffer) => {
+        if (prev === null) return currentOffer;
+        return {
+          ...currentOffer,
+          priceDetails:
+          {
+            ...prev.priceDetails,
+            price: prev.priceDetails.price + currentOffer.priceDetails.price,
+          },
+        };
+      }, null);
+      this.innerHTML = method(options, { ...offer, ...offer.priceDetails });
+    } else {
+      this.innerHTML = method(options, { ...offers[0], ...offers[0].priceDetails });
+    }
   }
 }
 

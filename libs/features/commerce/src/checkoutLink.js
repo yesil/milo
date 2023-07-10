@@ -70,7 +70,7 @@ class HTMLCheckoutLinkElement extends HTMLAnchorElement {
     // and that version has not changed.
     // eslint-disable-next-line no-param-reassign
     version ??= this.placeholder.togglePending();
-    if (!this.placeholder.toggleResolved(version)) return;
+    if (!this.placeholder.toggleResolved(offers, version)) return;
 
     if (!offers.length) {
       this.href = '#';

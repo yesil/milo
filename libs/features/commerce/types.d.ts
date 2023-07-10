@@ -83,7 +83,7 @@ declare global {
       render(overrides?: Record<string, any>): void;
       toggleFailed(version: number, error?: Error): boolean;
       togglePending(): number;
-      toggleResolved(version: number): boolean;
+      toggleResolved(offers: Array<Wcs.Offer>, version: number): boolean;
     }
 
     interface HTMLCheckoutLinkElement extends HTMLPlaceholderMixin, HTMLAnchorElement {

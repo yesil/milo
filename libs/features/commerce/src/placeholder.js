@@ -9,6 +9,7 @@ const setImmediate = (callback) => setTimeout(callback, 0);
 /**
  * Stores private bucket of values for each instance of placeholder.
  * @type {WeakMap<HTMLPlaceholderMethods, {
+ *  offers: Array<Commerce.Wcs.Offer>;
  *  error?: Error;
  *  promises: {
  *    resolve: (HTMLPlaceholderMethods) => void;
@@ -36,6 +37,7 @@ export const HTMLPlaceholderMethods = {
 
   init() {
     buckets.set(this, {
+      offers: [],
       promises: [],
       state: undefined,
       version: 0,
@@ -43,8 +45,8 @@ export const HTMLPlaceholderMethods = {
   },
 
   onceSettled() {
-    const { error, promises, state } = buckets.get(this);
-    if (RESOLVED === state) return Promise.resolve(this);
+    const { offers, error, promises, state } = buckets.get(this);
+    if (RESOLVED === state) return Promise.resolve({ node: this, offers });
     if (FAILED === state) return Promise.reject(error);
     return new Promise((resolve, reject) => {
       promises.push({ resolve, reject });
@@ -58,11 +60,12 @@ export const HTMLPlaceholderMethods = {
     });
   },
 
-  toggleResolved(version) {
+  toggleResolved(offers, version) {
     const bucket = buckets.get(this);
     // skip obsolete asyncs
     if (version !== bucket.version) return false;
     bucket.state = RESOLVED;
+    bucket.offers = offers;
     this.toggle();
     this.log?.debug('Resolved:', { dataset: { ...this.dataset }, node: this, settings: Service.settings });
     // allow calling code to perform sync updates of this element
@@ -70,7 +73,7 @@ export const HTMLPlaceholderMethods = {
     setImmediate(() => {
       const { promises } = bucket;
       bucket.promises = [];
-      promises.forEach(({ resolve }) => resolve(this));
+      promises.forEach(({ resolve }) => resolve({ node: this, offers }));
       this.dispatchEvent(
         new CustomEvent(RESOLVED, { bubbles: true }),
       );
