@@ -242,6 +242,11 @@ declare global {
          * Returns the plan type for given commitment and term.
          */
         getPlanType(commitment: Commitment, term: Term): PlanType;
+        
+        /**
+         * Returns commitment and term for given plan type.
+         */
+        fromPlanType(planType: PlanType): { commitment: Commitment, term: Term };
       }
 
       interface Offer extends ResolvedOffer {

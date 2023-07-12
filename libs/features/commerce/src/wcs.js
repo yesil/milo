@@ -50,6 +50,14 @@ const getPlanType = (commitment, term) => planTypesMap
     commitment === planTypeCommitment && (!term || term === planTypeTerm)
   ))[0];
 
+const fromPlanType = (planType) => {
+  const [, commitment, term] = planTypesMap
+    .find(([type]) => (
+      type === planType
+    ));
+  return { commitment, term };
+};
+
 /**
  * @param {Omit<Commerce.Wcs.Offer, 'planType'>} offer
  * @returns {Commerce.Wcs.Offer}
@@ -285,4 +293,5 @@ export {
   Wcs,
   selectOffers,
   getPlanType,
+  fromPlanType,
 };
