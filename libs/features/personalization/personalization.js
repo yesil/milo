@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import {
-  createTag, getConfig, loadIms, loadLink, loadScript, updateConfig,
+  createTag, getConfig, loadArea, loadIms, loadLink, loadScript, updateConfig,
 } from '../../utils/utils.js';
 
 const CLASS_EL_DELETE = 'p13n-deleted';
@@ -159,6 +159,7 @@ export async function replaceInner(path, element) {
   if (!html) return false;
 
   element.innerHTML = html;
+  await loadArea(element);
   return true;
 }
 /* c8 ignore stop */

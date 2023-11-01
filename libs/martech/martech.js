@@ -122,7 +122,7 @@ export default async function init({ persEnabled = false, persManifests }) {
     adobe: {
       launch: { url, controlPageLoad: false },
       alloy: { edgeConfigId },
-      target: false,
+      target: config.consumer?.target ?? false,
     },
     milo: true,
   };
