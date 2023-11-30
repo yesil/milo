@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>merch-cards web component test page</title>
+  <script src="./libs/features/spectrum-web-components/theme.js" type="module"></script>
+  <script src="./libs/features/spectrum-web-components/button.js" type="module"></script>
+  <script src="./libs/features/spectrum-web-components/overlay.js" type="module"></script>
+  <script src="./libs/features/spectrum-web-components/menu.js" type="module"></script>
+  <script src="./libs/features/spectrum-web-components/popover.js" type="module"></script>
+  <script src="./libs/features/spectrum-web-components/dialog.js" type="module"></script>
+
+  <style>
+    sp-theme {
+      height: 100vh;
+    }
+  </style>
+</head>
+
+<body>
+  <script type="module">
+
+  </script>
+  <main>
+    <sp-theme theme="spectrum" color="light" scale="medium" style="background-color: var(--spectrum-gray-100)">
+      <overlay-trigger placement="top" type="replace">
+        <sp-button slot="trigger"><sp-icon-help slot="icon"></sp-icon-help>Overlay Trigger</sp-button>
+        <sp-popover slot="click-content" open>
+          <sp-dialog size="s">
+            <h2 slot="heading">Click content</h2>
+            An &lt;overlay-trigger&gt; can be used to manage either or both of
+            the "click" and "hover" content slots that are made available. Here,
+            content is only addressed to
+            <code>slot="click-content"</code>
+            ...
+            <sp-button slot="button"
+              onclick="javascript: this.dispatchEvent(new Event('close', {bubbles: true, composed: true}));">
+              I understand
+            </sp-button>
+          </sp-dialog>
+        </sp-popover>
+      </overlay-trigger>
+    </sp-theme>
+
+  </main>
+</body>
+
+</html>
