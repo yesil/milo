@@ -1,4 +1,4 @@
-// Mon, 04 Dec 2023 15:55:40 GMT
+// Mon, 04 Dec 2023 16:24:34 GMT
 import{html as o,LitElement as L}from"./lit-all.min.js";import{css as b,unsafeCSS as s}from"./lit-all.min.js";var u="(max-width: 767px)";var m="(min-width: 768px)",l="(min-width: 1200px)",p="(min-width: 1600px)";var k=b`
     :host {
         position: relative;
@@ -303,10 +303,6 @@ import{html as o,LitElement as L}from"./lit-all.min.js";import{css as b,unsafeCS
         --consonant-merch-card-product-width: 378px;
         --consonant-merch-card-segment-width: 378px;
         --consonant-merch-card-image-width: 378px;
-    }
-
-    merch-card:not([variant]) {
-        width: 378px;
     }
 
     .three-merch-cards.${r},
