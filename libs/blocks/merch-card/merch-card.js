@@ -201,7 +201,11 @@ const init = async (el) => {
   const lastClass = styles[styles.length - 1];
   const name = PRODUCT_NAMES.includes(lastClass) ? lastClass : undefined;
 
-  const cardType = getPodType(styles);
+  const cardType = getPodType(styles) || 'product';
+  if (!styles.includes(cardType)) {
+    styles.push(cardType);
+  }
+
   let section = el.closest('.section');
   if (section) {
     const merchCards = addMerchCardGridIfMissing(section, cardType);
@@ -218,7 +222,7 @@ const init = async (el) => {
       section.classList.add('three-merch-cards', cardType);
     }
 
-    if (section && cardType) {
+    if (section) {
       section.classList.add(cardType);
     }
   }
@@ -229,9 +233,7 @@ const init = async (el) => {
 
   const merchCard = createTag('merch-card', { class: styles.join(' '), 'data-block': '' });
 
-  if (cardType) {
-    merchCard.setAttribute('variant', cardType);
-  }
+  merchCard.setAttribute('variant', cardType);
 
   if (name) {
     merchCard.setAttribute('name', name);
