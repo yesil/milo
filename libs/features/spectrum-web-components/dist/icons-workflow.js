@@ -7,20 +7,20 @@ import { IconBase as t2 } from "/libs/features/spectrum-web-components/dist/icon
 
 // node_modules/@spectrum-web-components/icons-workflow/src/custom-tag.js
 var t;
-var tag = function(e3, ...a) {
-  return t ? t(e3, ...a) : a.reduce((r2, p, l2) => r2 + p + e3[l2 + 1], e3[0]);
+var tag = function(e4, ...a) {
+  return t ? t(e4, ...a) : a.reduce((r2, p, l2) => r2 + p + e4[l2 + 1], e4[0]);
 };
-var setCustomTemplateLiteralTag = (e3) => {
-  t = e3;
+var setCustomTemplateLiteralTag = (e4) => {
+  t = e4;
 };
 
 // node_modules/@spectrum-web-components/icons-workflow/src/icons/Help.js
-var HelpIcon = ({ width: e3 = 24, height: a = 24, hidden: t4 = false, title: l2 = "Help" } = {}) => tag`<svg
+var HelpIcon = ({ width: e4 = 24, height: a = 24, hidden: t6 = false, title: l2 = "Help" } = {}) => tag`<svg
     xmlns="http://www.w3.org/2000/svg"
     height=${a}
     viewBox="0 0 36 36"
-    width=${e3}
-    aria-hidden=${t4 ? "true" : "false"}
+    width=${e4}
+    aria-hidden=${t6 ? "true" : "false"}
     role="img"
     fill="currentColor"
     aria-label=${l2}
@@ -46,12 +46,12 @@ import { html as e2 } from "/libs/features/spectrum-web-components/dist/base.js"
 import { IconBase as t3 } from "/libs/features/spectrum-web-components/dist/icon.js";
 
 // node_modules/@spectrum-web-components/icons-workflow/src/icons/Alert.js
-var AlertIcon = ({ width: a = 24, height: t4 = 24, hidden: e3 = false, title: r2 = "Alert" } = {}) => tag`<svg
+var AlertIcon = ({ width: a = 24, height: t6 = 24, hidden: e4 = false, title: r2 = "Alert" } = {}) => tag`<svg
     xmlns="http://www.w3.org/2000/svg"
-    height=${t4}
+    height=${t6}
     viewBox="0 0 36 36"
     width=${a}
-    aria-hidden=${e3 ? "true" : "false"}
+    aria-hidden=${e4 ? "true" : "false"}
     role="img"
     fill="currentColor"
     aria-label=${r2}
@@ -71,3 +71,37 @@ var IconAlert = class extends t3 {
 // node_modules/@spectrum-web-components/icons-workflow/icons/sp-icon-alert.js
 import { defineElement as r } from "/libs/features/spectrum-web-components/dist/base.js";
 r("sp-icon-alert", IconAlert);
+
+// node_modules/@spectrum-web-components/icons-workflow/src/elements/IconLinkOutLight.js
+import { html as e3 } from "/libs/features/spectrum-web-components/dist/base.js";
+import { IconBase as t4 } from "/libs/features/spectrum-web-components/dist/icon.js";
+
+// node_modules/@spectrum-web-components/icons-workflow/src/icons/LinkOutLight.js
+var LinkOutLightIcon = ({ width: t6 = 24, height: a = 24, hidden: e4 = false, title: l2 = "Link Out Light" } = {}) => tag`<svg
+    xmlns="http://www.w3.org/2000/svg"
+    height=${a}
+    viewBox="0 0 36 36"
+    width=${t6}
+    aria-hidden=${e4 ? "true" : "false"}
+    role="img"
+    fill="currentColor"
+    aria-label=${l2}
+  >
+    <path
+      d="M32 17.5V30H4V4h14.5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H3a1 1 0 0 0-1 1v28a1 1 0 0 0 1 1h30a1 1 0 0 0 1-1V17.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5Z"
+    />
+    <path
+      d="m23.54 2.853 3.389 3.39-9.546 9.546a.5.5 0 0 0 0 .707l2.117 2.121a.5.5 0 0 0 .707 0l9.546-9.546 3.389 3.389a.5.5 0 0 0 .858-.353V2H23.893a.5.5 0 0 0-.353.853Z"
+    />
+  </svg>`;
+
+// node_modules/@spectrum-web-components/icons-workflow/src/elements/IconLinkOutLight.js
+var IconLinkOutLight = class extends t4 {
+  render() {
+    return setCustomTemplateLiteralTag(e3), LinkOutLightIcon({ hidden: !this.label, title: this.label });
+  }
+};
+
+// node_modules/@spectrum-web-components/icons-workflow/icons/sp-icon-link-out-light.js
+import { defineElement as t5 } from "/libs/features/spectrum-web-components/dist/base.js";
+t5("sp-icon-link-out-light", IconLinkOutLight);
