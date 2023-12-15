@@ -1,5 +1,7 @@
 import '../../deps/merch-cards.js';
 import '../../deps/merch-card.js';
+import '../../deps/commerce.js';
+import '../merch/merch.js';
 import '../merch-card/merch-card.js';
 import { createTag, decorateLinks, getConfig, loadBlock, loadStyle } from '../../utils/utils.js';
 import { replaceText } from '../../features/placeholders.js';
@@ -71,6 +73,7 @@ export default async function main(el) {
   }
 
   const { miloLibs } = getConfig();
+  loadStyle(`${miloLibs}/blocks/merch/merch.css`);
   loadStyle(`${miloLibs}/blocks/merch-card/merch-card.css`);
 
   const attributes = { filter: 'all' };
