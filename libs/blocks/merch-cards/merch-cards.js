@@ -1,10 +1,8 @@
 import '../../deps/merch-cards.js';
 import '../../deps/merch-card.js';
 import '../merch-card/merch-card.js';
-import { createTag, decorateLinks, getConfig, loadBlock, loadLink } from '../../utils/utils.js';
+import { createTag, decorateLinks, getConfig, loadBlock, loadStyle } from '../../utils/utils.js';
 import { replaceText } from '../../features/placeholders.js';
-
-loadLink('../merch-card/merch-card.css', { as: 'style' });
 
 const { log } = window.lana;
 const DIGITS_ONLY = /^\d+$/;
@@ -72,13 +70,15 @@ export default async function main(el) {
     return fail('Missing queryIndexCardPath config');
   }
 
+  const { miloLibs } = getConfig();
+  loadStyle(`${miloLibs}/blocks/merch-card/merch-card.css`);
+
   const attributes = { filter: 'all' };
   const settingsEl = el.firstElementChild?.firstElementChild;
 
   const filtered = settingsEl?.firstElementChild?.tagName === 'STRONG';
 
   if (!filtered) {
-    const { miloLibs } = getConfig();
     await Promise.all([
       import(`${miloLibs}/features/spectrum-web-components/dist/theme.js`),
       import(`${miloLibs}/features/spectrum-web-components/dist/button.js`),
