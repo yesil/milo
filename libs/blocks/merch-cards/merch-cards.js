@@ -4,7 +4,7 @@ import '../merch-card/merch-card.js';
 import { createTag, decorateLinks, getConfig, loadBlock, loadLink } from '../../utils/utils.js';
 import { replaceText } from '../../features/placeholders.js';
 
-loadLink('./merch-card/merch-card.css', { as: 'style' });
+loadLink('../merch-card/merch-card.css', { as: 'style' });
 
 const { log } = window.lana;
 const DIGITS_ONLY = /^\d+$/;
