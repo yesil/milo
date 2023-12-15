@@ -57,6 +57,8 @@ export function parsePreferences(elements) {
 
 // eslint-disable-next-line consistent-return
 export default async function main(el) {
+  const startTime = new Date().getTime();
+  console.log('step 1', new Date().getTime() - startTime);
   const fail = (err = '') => {
     log(`Failed to initialize merch cards: ${err}`);
     el.innerHTML = '';
@@ -82,6 +84,7 @@ export default async function main(el) {
   const filtered = settingsEl?.firstElementChild?.tagName === 'STRONG';
 
   if (!filtered) {
+    console.log('step 2', new Date().getTime() - startTime);
     await Promise.all([
       import(`${miloLibs}/features/spectrum-web-components/dist/theme.js`),
       import(`${miloLibs}/features/spectrum-web-components/dist/button.js`),
@@ -90,6 +93,7 @@ export default async function main(el) {
       import(`${miloLibs}/features/spectrum-web-components/dist/menu.js`),
       import(`${miloLibs}/features/spectrum-web-components/dist/popover.js`),
     ]);
+    console.log('step 3', new Date().getTime() - startTime);
   }
 
   const preferences = {};
@@ -160,6 +164,7 @@ export default async function main(el) {
   let cardsData;
   let err;
 
+  console.log('step 4', new Date().getTime() - startTime);
   const type = el.classList[1];
   try {
     const res = await fetch(`${config?.locale?.prefix ?? ''}${config.queryIndexCardPath}.json?sheet=${type}`);
@@ -175,6 +180,8 @@ export default async function main(el) {
     return fail(err);
   }
 
+  console.log('step 5', new Date().getTime() - startTime);
+
   // TODO add aditional parameters.
   const cards = cardsData.data.map(({ cardContent }) => cardContent).join('\n');
   // Replace placeholders
@@ -185,7 +192,7 @@ export default async function main(el) {
   await Promise.all(blocks);
   filterMerchCards(merchCards);
   merchCards.append(...literalSlots);
-
+  console.log('step 6', new Date().getTime() - startTime);
   // re-order cards, update card filters
   [...merchCards.children].filter((card) => card.tagName === 'MERCH-CARD').forEach((merchCard) => {
     const filters = { ...merchCard.filters };
@@ -201,7 +208,7 @@ export default async function main(el) {
     });
     merchCard.filters = filters;
   });
-
+  console.log('step 7', new Date().getTime() - startTime);
   const appContainer = el.closest('main > div.section')?.firstElementChild;
   if (appContainer?.classList.contains('app')) {
     merchCards.classList.add('four-merch-cards', type);
