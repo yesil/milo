@@ -55,9 +55,9 @@ export function parsePreferences(elements) {
   });
 }
 
-// eslint-disable-next-line consistent-return
 export default async function main(el) {
-  const startTime = new Date().getTime();
+  // eslint-disable-next-line compat/compat
+  const startTime = window.performance?.timeOrigin ?? new Date().getTime();
   console.log('step 1', new Date().getTime() - startTime);
   const fail = (err = '') => {
     log(`Failed to initialize merch cards: ${err}`);
