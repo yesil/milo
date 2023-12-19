@@ -223,7 +223,7 @@ export default async function main(el) {
       let cnt = 1;
       for await (const card of cards) {
         merchCards.append(card);
-        if (cnt % 5 === 0) { // pause every 5 cards
+        if (cnt % 6 === 0) { // pause every 5 cards
           await makePause();
           cnt += 1;
         }
