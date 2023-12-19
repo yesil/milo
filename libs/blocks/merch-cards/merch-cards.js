@@ -62,7 +62,7 @@ export function parsePreferences(elements) {
   });
 }
 
-async function initMerchCards(config, type, el, preferences) {
+async function initMerchCards(config, type, el, preferences, attributes) {
   let cardsData;
   let err;
 
@@ -87,6 +87,9 @@ async function initMerchCards(config, type, el, preferences) {
   const cards = `<merch-cards>${cardsData.data.map(({ cardContent }) => cardContent).join('\n')}</merch-cards>`;
   const fragment = document.createRange().createContextualFragment(cards);
   const merchCards = fragment.firstElementChild;
+  Object.entries(attributes).forEach(([key, value]) => {
+    merchCards.setAttribute(key, value);
+  });
   // Replace placeholders
   merchCards.innerHTML = await replaceText(merchCards.innerHTML, config);
   const autoBlocks = await decorateLinks(merchCards).map(loadBlock);
@@ -111,7 +114,6 @@ async function initMerchCards(config, type, el, preferences) {
     merchCard.filters = filters;
   });
   console.log('step 7', new Date().getTime() - startTime);
-  merchCards.requestUpdate();
   return merchCards;
 }
 
@@ -213,11 +215,14 @@ export default async function main(el) {
   }
 
   const type = el.classList[1];
-  const merchCards = await initMerchCards(config, type, el, preferences);
-
-  Object.entries(attributes).forEach(([key, value]) => {
-    merchCards.setAttribute(key, value);
-  });
+  const merchCards = createTag('merch-cards', attributes);
+  merchCards.append(...literalSlots);
+  initMerchCards(config, type, initMerchCards, preferences, attributes)
+    .then((realMerchCards) => {
+      realMerchCards.className = merchCards.className;
+      realMerchCards.append(...literalSlots);
+      merchCards.replaceWith(realMerchCards);
+    });
 
   const appContainer = document.querySelector('.merch.app');
 
@@ -230,6 +235,5 @@ export default async function main(el) {
     el.replaceWith(merchCards);
   }
 
-  merchCards.append(...literalSlots);
   return merchCards;
 }
