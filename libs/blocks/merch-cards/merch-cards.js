@@ -221,7 +221,8 @@ export default async function main(el) {
     .then((realMerchCards) => {
       realMerchCards.className = merchCards.className;
       realMerchCards.append(...literalSlots);
-      merchCards.replaceWith(realMerchCards);
+      merchCards.append(...realMerchCards.children);
+      merchCards.requestUpdate();
     });
 
   const appContainer = document.querySelector('.merch.app');
