@@ -62,7 +62,7 @@ export function parsePreferences(elements) {
   });
 }
 
-async function initMerchCards(config, type, el, preferences, attributes) {
+async function initMerchCards(config, type, el, preferences) {
   let cardsData;
   let err;
 
@@ -84,22 +84,19 @@ async function initMerchCards(config, type, el, preferences, attributes) {
   console.log('step 5', new Date().getTime() - startTime);
 
   // TODO add aditional parameters.
-  const cards = `<merch-cards>${cardsData.data.map(({ cardContent }) => cardContent).join('\n')}</merch-cards>`;
+  const cards = `<div>${cardsData.data.map(({ cardContent }) => cardContent).join('\n')}</div>`;
   const fragment = document.createRange().createContextualFragment(cards);
-  const merchCards = fragment.firstElementChild;
-  Object.entries(attributes).forEach(([key, value]) => {
-    merchCards.setAttribute(key, value);
-  });
+  const cardsRoot = fragment.firstElementChild;
   // Replace placeholders
-  merchCards.innerHTML = await replaceText(merchCards.innerHTML, config);
-  const autoBlocks = await decorateLinks(merchCards).map(loadBlock);
+  cardsRoot.innerHTML = await replaceText(cardsRoot.innerHTML, config);
+  const autoBlocks = await decorateLinks(cardsRoot).map(loadBlock);
   await Promise.all(autoBlocks);
-  const blocks = [...merchCards.querySelectorAll(':scope > div')].map(loadBlock);
+  const blocks = [...cardsRoot.querySelectorAll(':scope > div')].map(loadBlock);
   await Promise.all(blocks);
-  filterMerchCards(merchCards);
+  filterMerchCards(cardsRoot);
   console.log('step 6', new Date().getTime() - startTime);
   // re-order cards, update card filters
-  [...merchCards.children].filter((card) => card.tagName === 'MERCH-CARD').forEach((merchCard) => {
+  [...cardsRoot.children].filter((card) => card.tagName === 'MERCH-CARD').forEach((merchCard) => {
     const filters = { ...merchCard.filters };
     Object.keys(filters).forEach((key) => {
       const preference = preferences[key];
@@ -114,7 +111,7 @@ async function initMerchCards(config, type, el, preferences, attributes) {
     merchCard.filters = filters;
   });
   console.log('step 7', new Date().getTime() - startTime);
-  return merchCards;
+  return cardsRoot;
 }
 
 export default async function main(el) {
@@ -217,11 +214,9 @@ export default async function main(el) {
   const type = el.classList[1];
   const merchCards = createTag('merch-cards', attributes);
   merchCards.append(...literalSlots);
-  initMerchCards(config, type, initMerchCards, preferences, attributes)
-    .then((realMerchCards) => {
-      realMerchCards.className = merchCards.className;
-      realMerchCards.append(...literalSlots);
-      merchCards.append(...realMerchCards.children);
+  initMerchCards(config, type, initMerchCards, preferences)
+    .then((cardsRoot) => {
+      merchCards.append(...cardsRoot.children);
       merchCards.requestUpdate();
     });
 
