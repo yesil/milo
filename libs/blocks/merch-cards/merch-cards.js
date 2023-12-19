@@ -216,15 +216,16 @@ export default async function main(el) {
 
   const type = el.classList[1];
   const merchCards = createTag('merch-cards', attributes);
+  merchCards.append(...literalSlots);
   initMerchCards(config, type, initMerchCards, preferences)
     .then((async (cardsRoot) => {
       const cards = [...cardsRoot.children];
       for await (const card of cards) {
         merchCards.append(card);
+        merchCards.requestUpdate();
         await makePause();
       }
-      merchCards.append(...literalSlots);
-      merchCards.requestUpdate();
+      merchCards.displayResult = true;
     }
     ));
 
