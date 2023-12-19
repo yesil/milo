@@ -29,6 +29,9 @@ const LITERAL_SLOTS = [
   'showMoreText',
 ];
 
+// eslint-disable-next-line no-promise-executor-return
+const makePause = async () => new Promise((resolve) => setTimeout(resolve, 0));
+
 const fail = (el, err = '') => {
   window.lana?.log(`Failed to initialize merch cards: ${err}`);
   el.innerHTML = '';
@@ -213,14 +216,17 @@ export default async function main(el) {
 
   const type = el.classList[1];
   const merchCards = createTag('merch-cards', attributes);
-  merchCards.append(...literalSlots);
   initMerchCards(config, type, initMerchCards, preferences)
-    .then((cardsRoot) => {
-      requestAnimationFrame(() => {
-        merchCards.append(...cardsRoot.children);
-        merchCards.requestUpdate();
-      });
-    });
+    .then((async (cardsRoot) => {
+      const cards = [...cardsRoot.children];
+      for await (const card of cards) {
+        merchCards.append(card);
+        await makePause();
+      }
+      merchCards.append(...literalSlots);
+      merchCards.requestUpdate();
+    }
+    ));
 
   const appContainer = document.querySelector('.merch.app');
 
