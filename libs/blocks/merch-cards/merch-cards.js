@@ -216,8 +216,10 @@ export default async function main(el) {
   merchCards.append(...literalSlots);
   initMerchCards(config, type, initMerchCards, preferences)
     .then((cardsRoot) => {
-      merchCards.append(...cardsRoot.children);
-      merchCards.requestUpdate();
+      requestAnimationFrame(() => {
+        merchCards.append(...cardsRoot.children);
+        merchCards.requestUpdate();
+      });
     });
 
   const appContainer = document.querySelector('.merch.app');
