@@ -220,7 +220,7 @@ export default async function main(el) {
   initMerchCards(config, type, initMerchCards, preferences)
     .then((async (cardsRoot) => {
       const cards = [...cardsRoot.children];
-      let cnt = 0;
+      let cnt = 1;
       for await (const card of cards) {
         merchCards.append(card);
         if (cnt % 5 === 0) { // pause every 5 cards
