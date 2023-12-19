@@ -222,8 +222,11 @@ export default async function main(el) {
       const cards = [...cardsRoot.children];
       let cnt = 1;
       for await (const card of cards) {
+        requestAnimationFrame(() => {
+          merchCards.append(card);
+        });
         merchCards.append(card);
-        if (cnt % 6 === 0) { // pause every 5 cards
+        if (cnt % 3 === 0) { // pause every 5 cards
           await makePause();
           cnt += 1;
         }
