@@ -62,7 +62,7 @@ export function parsePreferences(elements) {
   });
 }
 
-async function initCards(config, type, merchCards, preferences) {
+async function initMerchCards(config, type, el, preferences) {
   let cardsData;
   let err;
 
@@ -78,24 +78,25 @@ async function initCards(config, type, merchCards, preferences) {
     err = error.message;
   }
   if (!cardsData) {
-    fail(merchCards, err);
+    fail(el, err);
   }
 
   console.log('step 5', new Date().getTime() - startTime);
 
   // TODO add aditional parameters.
-  const cards = cardsData.data.map(({ cardContent }) => cardContent).join('\n');
-  const allCards = document.createElement('div');
+  const cards = `<merch-cards>${cardsData.data.map(({ cardContent }) => cardContent).join('\n')}</merch-cards>`;
+  const fragment = document.createRange().createContextualFragment(cards);
+  const merchCards = fragment.firstElementChild;
   // Replace placeholders
-  allCards.innerHTML = await replaceText(cards, config);
-  const autoBlocks = await decorateLinks(allCards).map(loadBlock);
+  merchCards.innerHTML = await replaceText(merchCards.innerHTML, config);
+  const autoBlocks = await decorateLinks(merchCards).map(loadBlock);
   await Promise.all(autoBlocks);
-  const blocks = [...allCards.querySelectorAll(':scope > div')].map(loadBlock);
+  const blocks = [...merchCards.querySelectorAll(':scope > div')].map(loadBlock);
   await Promise.all(blocks);
-  filterMerchCards(allCards);
+  filterMerchCards(merchCards);
   console.log('step 6', new Date().getTime() - startTime);
   // re-order cards, update card filters
-  [...allCards.children].filter((card) => card.tagName === 'MERCH-CARD').forEach((merchCard) => {
+  [...merchCards.children].filter((card) => card.tagName === 'MERCH-CARD').forEach((merchCard) => {
     const filters = { ...merchCard.filters };
     Object.keys(filters).forEach((key) => {
       const preference = preferences[key];
@@ -109,11 +110,9 @@ async function initCards(config, type, merchCards, preferences) {
     });
     merchCard.filters = filters;
   });
-  requestAnimationFrame(() => {
-    merchCards.append(...allCards.children);
-    merchCards.requestUpdate();
-    console.log('step 7', new Date().getTime() - startTime);
-  });
+  console.log('step 7', new Date().getTime() - startTime);
+  merchCards.requestUpdate();
+  return merchCards;
 }
 
 export default async function main(el) {
@@ -177,8 +176,6 @@ export default async function main(el) {
     }
   }
 
-  const merchCards = createTag('merch-cards', attributes);
-
   const literalsEl = el.lastElementChild?.firstElementChild;
   // parse literals
   const literalSlots = [];
@@ -214,10 +211,16 @@ export default async function main(el) {
       literalSlots.push(slot);
     }
   }
-  merchCards.append(...literalSlots);
 
   const type = el.classList[1];
+  const merchCards = await initMerchCards(config, type, el, preferences);
+
+  Object.entries(attributes).forEach(([key, value]) => {
+    merchCards.setAttribute(key, value);
+  });
+
   const appContainer = document.querySelector('.merch.app');
+
   if (appContainer) {
     merchCards.classList.add('four-merch-cards', type);
     appContainer.appendChild(merchCards);
@@ -226,6 +229,7 @@ export default async function main(el) {
     el.closest('main > .section').classList.add('four-merch-cards', type);
     el.replaceWith(merchCards);
   }
-  initCards(config, type, merchCards, preferences);
+
+  merchCards.append(...literalSlots);
   return merchCards;
 }
