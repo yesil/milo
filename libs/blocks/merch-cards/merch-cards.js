@@ -222,7 +222,6 @@ export default async function main(el) {
       const cards = [...cardsRoot.children];
       for await (const card of cards) {
         merchCards.append(card);
-        merchCards.requestUpdate();
         await makePause();
       }
       merchCards.displayResult = true;
