@@ -8,9 +8,6 @@ import { replaceText } from '../../features/placeholders.js';
 
 const DIGITS_ONLY = /^\d+$/;
 
-// eslint-disable-next-line compat/compat
-const startTime = window.performance?.timeOrigin ?? new Date().getTime();
-
 const LITERAL_SLOTS = [
   'searchText',
   'filtersText',
@@ -70,7 +67,6 @@ async function initMerchCards(config, type, el, preferences) {
   let cardsData;
   let err;
 
-  console.log('step 4', new Date().getTime() - startTime);
   try {
     const res = await fetch(`${config?.locale?.prefix ?? ''}${config.queryIndexCardPath}.json?sheet=${type}`);
     if (res.ok) {
@@ -84,8 +80,6 @@ async function initMerchCards(config, type, el, preferences) {
   if (!cardsData) {
     fail(el, err);
   }
-
-  console.log('step 5', new Date().getTime() - startTime);
 
   // TODO add aditional parameters.
   const cards = `<div>${cardsData.data.map(({ cardContent }) => cardContent).join('\n')}</div>`;
@@ -109,7 +103,6 @@ async function initMerchCards(config, type, el, preferences) {
   }
 
   filterMerchCards(cardsRoot);
-  console.log('step 6', new Date().getTime() - startTime);
   // re-order cards, update card filters
   [...cardsRoot.children].filter((card) => card.tagName === 'MERCH-CARD').forEach((merchCard) => {
     const filters = { ...merchCard.filters };
@@ -125,13 +118,10 @@ async function initMerchCards(config, type, el, preferences) {
     });
     merchCard.filters = filters;
   });
-  console.log('step 7', new Date().getTime() - startTime);
   return cardsRoot;
 }
 
 export default async function main(el) {
-  console.log('step 1', new Date().getTime() - startTime);
-
   if (el.classList.length < 2) {
     return fail('Missing collection type');
   }
@@ -151,7 +141,6 @@ export default async function main(el) {
   const filtered = settingsEl?.firstElementChild?.tagName === 'STRONG';
 
   if (!filtered) {
-    console.log('step 2', new Date().getTime() - startTime);
     await Promise.all([
       import(`${miloLibs}/features/spectrum-web-components/dist/theme.js`),
       import(`${miloLibs}/features/spectrum-web-components/dist/button.js`),
@@ -160,7 +149,6 @@ export default async function main(el) {
       import(`${miloLibs}/features/spectrum-web-components/dist/menu.js`),
       import(`${miloLibs}/features/spectrum-web-components/dist/popover.js`),
     ]);
-    console.log('step 3', new Date().getTime() - startTime);
   }
 
   const preferences = {};
@@ -234,7 +222,9 @@ export default async function main(el) {
       const cards = [...cardsRoot.children];
       let cnt = 1;
       for await (const card of cards) {
-        merchCards.append(card);
+        requestAnimationFrame(() => {
+          merchCards.append(card);
+        });
         if (cnt % 3 === 0) { // pause every 5 cards
           await makePause();
           cnt += 1;
