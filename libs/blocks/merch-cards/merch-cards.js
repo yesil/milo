@@ -219,12 +219,13 @@ export default async function main(el) {
   merchCards.append(...literalSlots);
   initMerchCards(config, type, initMerchCards, preferences)
     .then((async (cardsRoot) => {
-      requestAnimationFrame(() => {
-        merchCards.append(...cardsRoot.children);
-        merchCards.displayResult = true;
-      });
-    }
-    ));
+      const cards = [...cardsRoot.children];
+      for await (const card of cards) {
+        merchCards.append(card);
+        await makePause();
+      }
+      merchCards.displayResult = true;
+    }));
 
   const appContainer = document.querySelector('.merch.app');
 
