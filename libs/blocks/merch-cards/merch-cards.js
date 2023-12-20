@@ -29,6 +29,7 @@ const LITERAL_SLOTS = [
   'showMoreText',
 ];
 
+// allows improve TBT by returning control to the main thread.
 // eslint-disable-next-line no-promise-executor-return
 const makePause = async () => new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -92,10 +93,20 @@ async function initMerchCards(config, type, el, preferences) {
   const cardsRoot = fragment.firstElementChild;
   // Replace placeholders
   cardsRoot.innerHTML = await replaceText(cardsRoot.innerHTML, config);
+  await makePause();
   const autoBlocks = await decorateLinks(cardsRoot).map(loadBlock);
   await Promise.all(autoBlocks);
+  await makePause();
   const blocks = [...cardsRoot.querySelectorAll(':scope > div')].map(loadBlock);
-  await Promise.all(blocks);
+
+  // process merch card blocks in batches of 3.
+  const batchSize = 3;
+  for (let i = 0; i < blocks.length; i += batchSize) {
+    const batch = blocks.slice(i, i + batchSize);
+    await Promise.all(batch);
+    await makePause();
+  }
+
   filterMerchCards(cardsRoot);
   console.log('step 6', new Date().getTime() - startTime);
   // re-order cards, update card filters
@@ -222,9 +233,6 @@ export default async function main(el) {
       const cards = [...cardsRoot.children];
       let cnt = 1;
       for await (const card of cards) {
-        requestAnimationFrame(() => {
-          merchCards.append(card);
-        });
         merchCards.append(card);
         if (cnt % 3 === 0) { // pause every 5 cards
           await makePause();
