@@ -81,6 +81,7 @@ async function initMerchCards(config, type, el, preferences) {
     fail(el, err);
   }
 
+
   // TODO add aditional parameters.
   const cards = `<div>${cardsData.data.map(({ cardContent }) => cardContent).join('\n')}</div>`;
   const fragment = document.createRange().createContextualFragment(cards);
@@ -220,12 +221,17 @@ export default async function main(el) {
   initMerchCards(config, type, initMerchCards, preferences)
     .then((async (cardsRoot) => {
       const cards = [...cardsRoot.children];
+      let cnt = 1;
       for await (const card of cards) {
         merchCards.append(card);
-        await makePause();
+        if (cnt % 4 === 0) { // pause every 4 cards
+          await makePause();
+          cnt += 1;
+        }
       }
       merchCards.displayResult = true;
-    }));
+    }
+    ));
 
   const appContainer = document.querySelector('.merch.app');
 
