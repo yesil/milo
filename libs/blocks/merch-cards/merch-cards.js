@@ -224,6 +224,10 @@ export default async function main(el) {
       let cnt = 1;
       for await (const card of cards) {
         merchCards.append(card);
+        if (cnt === 4) {
+          // avoid flickering with wide-cards on desktop.
+          merchCards.requestUpdate();
+        }
         if (cnt % 4 === 0) { // pause every 4 cards
           await makePause();
           cnt += 1;
