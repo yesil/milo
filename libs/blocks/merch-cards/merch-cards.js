@@ -39,11 +39,10 @@ const fail = (el, err = '') => {
  * Removes merch cards from the DOM if they are not meant to be displayed in this merch cards block.
  * @param {*} merchCards merch-cards element
  */
-export function filterMerchCards(merchCards) {
-  if (!merchCards.filtered) return;
+export function filterMerchCards(merchCards, filtered) {
   [...merchCards.children].filter((child) => child.tagName === 'MERCH-CARD')
     .forEach((card) => {
-      if (!Object.prototype.hasOwnProperty.call(card.filters, merchCards.filtered)) {
+      if (!Object.prototype.hasOwnProperty.call(card.filters, filtered)) {
         card.remove();
       }
     });
@@ -63,7 +62,7 @@ export function parsePreferences(elements) {
   });
 }
 
-async function initMerchCards(config, type, el, preferences) {
+async function initMerchCards(config, type, filtered, el, preferences) {
   let cardsData;
   let err;
 
@@ -80,7 +79,6 @@ async function initMerchCards(config, type, el, preferences) {
   if (!cardsData) {
     fail(el, err);
   }
-
 
   // TODO add aditional parameters.
   const cards = `<div>${cardsData.data.map(({ cardContent }) => cardContent).join('\n')}</div>`;
@@ -103,7 +101,9 @@ async function initMerchCards(config, type, el, preferences) {
     await makePause();
   }
 
-  filterMerchCards(cardsRoot);
+  if (filtered) {
+    filterMerchCards(cardsRoot, filtered);
+  }
   // re-order cards, update card filters
   [...cardsRoot.children].filter((card) => card.tagName === 'MERCH-CARD').forEach((merchCard) => {
     const filters = { ...merchCard.filters };
@@ -218,7 +218,7 @@ export default async function main(el) {
   const type = el.classList[1];
   const merchCards = createTag('merch-cards', attributes);
   merchCards.append(...literalSlots);
-  initMerchCards(config, type, initMerchCards, preferences)
+  initMerchCards(config, type, attributes.filtered, el, preferences)
     .then((async (cardsRoot) => {
       const cards = [...cardsRoot.children];
       let cnt = 1;
@@ -243,8 +243,10 @@ export default async function main(el) {
     merchCards.classList.add('four-merch-cards', type);
     appContainer.appendChild(merchCards);
     el.remove();
-  } else if (!el.closest('main > .section[class*="-merch-card"]')) {
-    el.closest('main > .section').classList.add('four-merch-cards', type);
+  } else {
+    if (!el.closest('main > .section[class*="-merch-card"]')) {
+      el.closest('main > .section').classList.add('four-merch-cards', type);
+    }
     el.replaceWith(merchCards);
   }
 
