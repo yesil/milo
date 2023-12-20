@@ -91,6 +91,7 @@ async function initMerchCards(config, type, el, preferences) {
   const cards = `<div>${cardsData.data.map(({ cardContent }) => cardContent).join('\n')}</div>`;
   const fragment = document.createRange().createContextualFragment(cards);
   const cardsRoot = fragment.firstElementChild;
+  await makePause();
   // Replace placeholders
   cardsRoot.innerHTML = await replaceText(cardsRoot.innerHTML, config);
   await makePause();
