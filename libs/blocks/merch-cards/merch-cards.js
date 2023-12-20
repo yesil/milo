@@ -224,11 +224,13 @@ export default async function main(el) {
       const batchSize = 3;
       for (let i = 0; i < cards.length; i += batchSize) {
         const batch = cards.slice(i, i + batchSize);
-        merchCards.append(...batch);
-        if (i === batchSize) {
-          // avoid layout shift due to size of first cards.
-          merchCards.requestUpdate();
-        }
+        requestAnimationFrame(() => {
+          merchCards.append(...batch);
+          if (i === batchSize) {
+            // avoid layout shift due to size of first cards.
+            merchCards.requestUpdate();
+          }
+        });
         await makePause();
       }
       merchCards.displayResult = true;
