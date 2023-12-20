@@ -221,17 +221,15 @@ export default async function main(el) {
   initMerchCards(config, type, attributes.filtered, el, preferences)
     .then((async (cardsRoot) => {
       const cards = [...cardsRoot.children];
-      let cnt = 1;
-      for await (const card of cards) {
-        merchCards.append(card);
-        if (cnt === 4) {
-          // avoid flickering with wide-cards on desktop.
+      const batchSize = 3;
+      for (let i = 0; i < cards.length; i += batchSize) {
+        const batch = cards.slice(i, i + batchSize);
+        merchCards.append(...batch);
+        if (i === batchSize) {
+          // avoid layout shift due to size of first cards.
           merchCards.requestUpdate();
         }
-        if (cnt % 4 === 0) { // pause every 4 cards
-          await makePause();
-          cnt += 1;
-        }
+        await makePause();
       }
       merchCards.displayResult = true;
     }

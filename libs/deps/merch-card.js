@@ -1,4 +1,4 @@
-// Tue, 19 Dec 2023 14:58:20 GMT
+// Wed, 20 Dec 2023 12:32:36 GMT
 import{html as n,LitElement as T}from"/libs/deps/lit-all.min.js";import{css as x,unsafeCSS as p}from"/libs/deps/lit-all.min.js";var s="(min-width: 768px)",c="(min-width: 1200px)",i="(min-width: 1600px)";var v=x`
     :host {
         position: relative;
@@ -351,6 +351,10 @@ import{html as n,LitElement as T}from"/libs/deps/lit-all.min.js";import{css as x
 
 merch-cards {
     display: contents;
+}
+
+merch-cards > merch-card:not([style]) {
+    display: none;
 }
 
 merch-cards > p[slot],
