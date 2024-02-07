@@ -170,11 +170,15 @@ export async function buildCta(el, params) {
   const context = await getCheckoutContext(el, params);
   if (!context) return null;
   const service = await initService();
+  const { nodeName, textContent } = el.nextSibling;
+  const isLinkStyle = nodeName === '#text' && textContent.trim().length > 0;
   const text = el.textContent?.replace(/^CTA +/, '');
   const cta = service.createCheckoutLink(context, text);
-  cta.classList.add('con-button');
-  cta.classList.toggle('button-l', large);
-  cta.classList.toggle('blue', strong);
+  if (!isLinkStyle) {
+    cta.classList.add('con-button');
+    cta.classList.toggle('button-l', large);
+    cta.classList.toggle('blue', strong);
+  }
   if (context.entitlement !== 'false') {
     cta.classList.add(LOADING_ENTITLEMENTS);
     cta.onceSettled().finally(() => cta.classList.remove(LOADING_ENTITLEMENTS));

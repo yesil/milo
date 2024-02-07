@@ -3,7 +3,7 @@ import { getConfig, getLocale, getMetadata, loadScript, loadStyle } from '../../
 
 export const AOS_API_KEY = 'wcms-commerce-ims-user-prod';
 export const CHECKOUT_CLIENT_ID = 'creative';
-export const DEFAULT_CTA_TEXT = 'buy-now';
+export const DEFAULT_CTA_TEXT = 'Enter link text';
 const IMS_COMMERCE_CLIENT_ID = 'aos_milo_commerce';
 const IMS_SCOPE = 'AdobeID,openid';
 const IMS_ENV = 'prod';
@@ -50,7 +50,9 @@ export const createLinkMarkup = (
 
     if (isCta) {
       const { workflow, workflowStep } = options;
-      params.set('text', options.ctaText ?? DEFAULT_CTA_TEXT);
+      if (options.ctaText) {
+        params.set('text', options.ctaText);
+      }
       if (workflow && workflow !== defaults.checkoutWorkflow) {
         params.set('workflow', workflow);
       }
@@ -75,9 +77,11 @@ export const createLinkMarkup = (
   };
 
   const link = document.createElement('a');
-  link.textContent = isCta
-    ? `CTA {{${options.ctaText ?? DEFAULT_CTA_TEXT}}}`
-    : `PRICE - ${offer.planType} - ${offer.name}`;
+  if (isCta) {
+    link.textContent = options.ctaText ? `CTA {{${options.ctaText}}}` : DEFAULT_CTA_TEXT;
+  } else {
+    link.textContent = `PRICE - ${offer.planType} - ${offer.name}`;
+  }
   link.href = createHref();
   return link;
 };
