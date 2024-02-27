@@ -90,7 +90,7 @@ async function initMerchCards(config, type, filtered, el, preferences) {
   // Replace placeholders
   cardsRoot.innerHTML = await replaceText(cardsRoot.innerHTML, config);
   await makePause();
-  const autoBlocks = await decorateLinks(cardsRoot).map(loadBlock);
+  const autoBlocks = decorateLinks(cardsRoot).map(loadBlock);
   const batchSize = 3;
   for (let i = 0; i < autoBlocks.length; i += batchSize) {
     const batch = autoBlocks.slice(i, i + batchSize);
