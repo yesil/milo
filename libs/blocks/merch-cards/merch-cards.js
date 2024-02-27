@@ -92,13 +92,16 @@ async function initMerchCards(config, type, filtered, el, preferences) {
 
   await makePause();
   const processAutoBlocks = async (cardEl) => {
-    //await Promise.all(decorateLinks(cardEl).map(loadBlock));
-    //await makePause();
+    performance.mark(`blockStart: ${cardEl.className}`);
+    await Promise.all(decorateLinks(cardEl).map(loadBlock));
+    performance.mark(`blockEnd: ${cardEl.className}`);
+    performance.measure(`block: ${cardEl.className}`, `blockStart: ${cardEl.className}`, `blockEnd: ${cardEl.className}`);
+    await makePause();
     await loadBlock(cardEl);
   };
   const blocks = [...cardsRoot.querySelectorAll(':scope > div')].map(processAutoBlocks);
 
-  const batchSize = 6;
+  const batchSize = 1;
   // process merch card blocks in batches of 3.
   for (let i = 0; i < blocks.length; i += batchSize) {
     const batch = blocks.slice(i, i + batchSize);
