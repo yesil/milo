@@ -94,7 +94,7 @@ async function initMerchCards(config, type, filtered, el, preferences) {
   const batchSize = 3;
   for (let i = 0; i < autoBlocks.length; i += batchSize) {
     const batch = autoBlocks.slice(i, i + batchSize);
-    await Promise.all(batch);
+    await batch;
     await makePause();
   }
 
