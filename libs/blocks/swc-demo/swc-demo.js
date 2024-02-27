@@ -106,10 +106,8 @@ async function getApp() {
 export default async function main(el) {
   performance.mark('swc-demo:start');
   const { base } = getConfig();
-  const deps = Promise.all([
+  Promise.all([
     import(`${base}/features/spectrum-web-components/dist/theme.js`),
-    import(`${base}/features/spectrum-web-components/dist/base.js`),
-    import(`${base}/features/spectrum-web-components/dist/shared.js`),
     import(`${base}/features/spectrum-web-components/dist/button.js`),
     import(`${base}/features/spectrum-web-components/dist/picker.js`),
     import(`${base}/features/spectrum-web-components/dist/checkbox.js`),
@@ -118,7 +116,6 @@ export default async function main(el) {
 
   el.replaceWith(await getApp());
 
-  await deps;
   performance.mark('swc-demo:end');
   performance.measure('swc-demo block', 'swc-demo:start', 'swc-demo:end');
   return el;
