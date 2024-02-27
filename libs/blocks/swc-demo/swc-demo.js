@@ -1,5 +1,12 @@
+/* eslint-disable import/no-relative-packages */
 /* eslint-disable class-methods-use-this */
-import { createTag, getConfig } from '../../utils/utils.js';
+import { createTag } from '../../utils/utils.js';
+import { LitElement, html, css, repeat } from '../../deps/lit-all.min.js';
+import '../../features/spectrum-web-components/dist/theme.js';
+import '../../features/spectrum-web-components/dist/button.js';
+import '../../features/spectrum-web-components/dist/picker.js';
+import '../../features/spectrum-web-components/dist/checkbox.js';
+import '../../features/spectrum-web-components/dist/textfield.js';
 
 const tasks = [
   { title: '1. Quick Introduction to commerce on adobe.com', completed: false },
@@ -11,12 +18,10 @@ const tasks = [
   { title: '7. Performance optimizations', completed: false },
 ];
 
-async function getApp() {
-  const { LitElement, html, css, repeat } = await import('../../deps/lit-all.min.js');
-  class SwcDemo extends LitElement {
-    static properties = { hideCompleted: { type: Boolean, attribute: 'hide-completed', reflect: true } };
+class SwcDemo extends LitElement {
+  static properties = { hideCompleted: { type: Boolean, attribute: 'hide-completed', reflect: true } };
 
-    static styles = css`
+  static styles = css`
   #todo-list {
     list-style: none;
     padding: 0;
@@ -30,57 +35,57 @@ async function getApp() {
   }  
   `;
 
-    constructor() {
-      super();
-      this.hideCompleted = false;
-    }
+  constructor() {
+    super();
+    this.hideCompleted = false;
+  }
 
-    onTaskChange(event, task) {
-      const { target } = event;
-      setTimeout(() => {
-        task.completed = target.checked;
-        this.requestUpdate();
-      }, 2000);
-    }
+  onTaskChange(event, task) {
+    const { target } = event;
+    setTimeout(() => {
+      task.completed = target.checked;
+      this.requestUpdate();
+    }, 2000);
+  }
 
-    onCompletedTasksChange(event) {
-      this.hideCompleted = event.target.value === 'hide';
-    }
+  onCompletedTasksChange(event) {
+    this.hideCompleted = event.target.value === 'hide';
+  }
 
-    get tasks() {
-      const filteredTasks = tasks.filter((task) => !this.hideCompleted || !task.completed);
-      return html`${repeat(
-        filteredTasks,
-        (task) => task.title,
-        (task) => html`<li><sp-checkbox
+  get tasks() {
+    const filteredTasks = tasks.filter((task) => !this.hideCompleted || !task.completed);
+    return html`${repeat(
+      filteredTasks,
+      (task) => task.title,
+      (task) => html`<li><sp-checkbox
         ?checked=${task.completed}
         @change=${(event) => this.onTaskChange(event, task)}>
         ${task.title}
         </sp-checkbox></li>`,
-      )}`;
-    }
+    )}`;
+  }
 
-    get newTodoInput() {
-      return this.shadowRoot.getElementById('new-todo');
-    }
+  get newTodoInput() {
+    return this.shadowRoot.getElementById('new-todo');
+  }
 
-    addTask() {
-      const taskText = this.newTodoInput.value.trim();
-      if (taskText) {
-        tasks.push({ title: taskText, completed: false });
-        this.newTodoInput.value = '';
-        this.requestUpdate();
-      }
+  addTask() {
+    const taskText = this.newTodoInput.value.trim();
+    if (taskText) {
+      tasks.push({ title: taskText, completed: false });
+      this.newTodoInput.value = '';
+      this.requestUpdate();
     }
+  }
 
-    keypress(event) {
-      if (event.key === 'Enter') {
-        this.addTask();
-      }
+  keypress(event) {
+    if (event.key === 'Enter') {
+      this.addTask();
     }
+  }
 
-    render() {
-      return html`
+  render() {
+    return html`
     <sp-theme scale="medium" color="light">
     <div id="todo-app">
         <sp-textfield id="new-todo" placeholder="What needs to be done?" @keypress=${this.keypress}></sp-textfield>
@@ -95,27 +100,14 @@ async function getApp() {
         </sp-picker>
     </div>
   </sp-theme>`;
-    }
   }
-
-  customElements.define('swc-demo', SwcDemo);
-
-  return createTag('swc-demo', {});
 }
+
+customElements.define('swc-demo', SwcDemo);
 
 export default async function main(el) {
   performance.mark('swc-demo:start');
-  const { base } = getConfig();
-  Promise.all([
-    import(`${base}/features/spectrum-web-components/dist/theme.js`),
-    import(`${base}/features/spectrum-web-components/dist/button.js`),
-    import(`${base}/features/spectrum-web-components/dist/picker.js`),
-    import(`${base}/features/spectrum-web-components/dist/checkbox.js`),
-    import(`${base}/features/spectrum-web-components/dist/textfield.js`),
-  ]);
-
-  el.replaceWith(await getApp());
-
+  el.replaceWith(createTag('swc-demo', {}));
   performance.mark('swc-demo:end');
   performance.measure('swc-demo block', 'swc-demo:start', 'swc-demo:end');
   return el;
