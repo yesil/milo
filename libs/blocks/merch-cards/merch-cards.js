@@ -92,13 +92,13 @@ async function initMerchCards(config, type, filtered, el, preferences) {
 
   await makePause();
   const processAutoBlocks = async (cardEl) => {
-    await Promise.all(decorateLinks(cardEl).map(loadBlock));
-    await makePause();
+    //await Promise.all(decorateLinks(cardEl).map(loadBlock));
+    //await makePause();
     await loadBlock(cardEl);
   };
   const blocks = [...cardsRoot.querySelectorAll(':scope > div')].map(processAutoBlocks);
 
-  const batchSize = 3;
+  const batchSize = 6;
   // process merch card blocks in batches of 3.
   for (let i = 0; i < blocks.length; i += batchSize) {
     const batch = blocks.slice(i, i + batchSize);
