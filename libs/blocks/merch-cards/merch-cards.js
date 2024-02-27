@@ -91,12 +91,17 @@ async function initMerchCards(config, type, filtered, el, preferences) {
   cardsRoot.innerHTML = await replaceText(cardsRoot.innerHTML, config);
   await makePause();
   const autoBlocks = await decorateLinks(cardsRoot).map(loadBlock);
-  await Promise.all(autoBlocks);
+  const batchSize = 3;
+  for (let i = 0; i < autoBlocks.length; i += batchSize) {
+    const batch = autoBlocks.slice(i, i + batchSize);
+    await Promise.all(batch);
+    await makePause();
+  }
+
   await makePause();
   const blocks = [...cardsRoot.querySelectorAll(':scope > div')].map(loadBlock);
 
   // process merch card blocks in batches of 3.
-  const batchSize = 3;
   for (let i = 0; i < blocks.length; i += batchSize) {
     const batch = blocks.slice(i, i + batchSize);
     await Promise.all(batch);
