@@ -11,7 +11,7 @@ const tasks = [
   { title: '7. Performance optimizations', completed: false },
 ];
 
-async function getApp() {
+export async function getApp() {
   const { LitElement, html, css, repeat } = await import('../../deps/lit-all.min.js');
   class SwcDemo extends LitElement {
     static properties = { hideCompleted: { type: Boolean, attribute: 'hide-completed', reflect: true } };
