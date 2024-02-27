@@ -3,7 +3,9 @@ import '../../deps/merch-card.js';
 import '../../deps/commerce.js';
 import '../merch/merch.js';
 import '../merch-card/merch-card.js';
-import { createTag, decorateLinks, getConfig, loadBlock, loadStyle } from '../../utils/utils.js';
+import {
+  createTag, decorateLinks, decorateSVG, getConfig, loadBlock, loadStyle,
+} from '../../utils/utils.js';
 import { replaceText } from '../../features/placeholders.js';
 
 const DIGITS_ONLY = /^\d+$/;
@@ -91,6 +93,11 @@ async function initMerchCards(config, type, filtered, el, preferences) {
   cardsRoot.innerHTML = await replaceText(cardsRoot.innerHTML, config);
 
   performance.mark('merch-cards:decorateLinks:start');
+  [...cardsRoot.querySelectorAll('a[href$=".svg"]')].forEach((a) => {
+    decorateSVG(a);
+    a.setAttribute('href', '');
+  });
+  await makePause();
   await Promise.all(decorateLinks(cardsRoot).map(loadBlock));
   performance.mark('merch-cards:decorateLinks:end');
   performance.measure('merch-cards:decorateLinks', 'merch-cards:decorateLinks:start', 'merch-cards:decorateLinks:end');

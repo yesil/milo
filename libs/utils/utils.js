@@ -138,6 +138,8 @@ export const MILO_EVENTS = { DEFERRED: 'milo:deferred' };
 const LANGSTORE = 'langstore';
 const PAGE_URL = new URL(window.location.href);
 
+const PATTERN_SKIP_HTML_EXTENSION = /.*(svg|jpg|png)$/;
+
 function getEnv(conf) {
   const { host } = window.location;
   const query = PAGE_URL.searchParams.get('env');
@@ -343,6 +345,7 @@ export function appendHtmlToLink(link) {
   if (!useDotHtml) return;
   const href = link.getAttribute('href');
   if (!href?.length) return;
+  if (PATTERN_SKIP_HTML_EXTENSION.test(href)) return;
 
   const { autoBlocks = [], htmlExclude = [] } = getConfig();
 
@@ -475,9 +478,10 @@ export async function loadBlock(block) {
 }
 
 export function decorateSVG(a) {
-  const { textContent, href } = a;
-  if (!(textContent.includes('.svg') || href.includes('.svg'))) return a;
+  const { href } = a;
+  if (!(/svg$/.test(href))) return a;
   try {
+    const { textContent } = a;
     // Mine for URL and alt text
     const splitText = textContent.split('|');
     const textUrl = new URL(splitText.shift().trim());
