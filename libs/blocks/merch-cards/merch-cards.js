@@ -141,23 +141,21 @@ export default async function init(el) {
   const merchCardStyles = new Promise((resolve) => {
     loadStyle(`${miloLibs}/blocks/merch-card/merch-card.css`, resolve);
   });
-  const allStyles = Promise.all([merchStyles, merchCardStyles]);
 
   const attributes = { filter: 'all', class: CLASS_LOADING };
   const settingsEl = el.firstElementChild?.firstElementChild;
 
   const filtered = settingsEl?.firstElementChild?.tagName === 'STRONG';
 
-  if (!filtered) {
-    await Promise.all([
+  const deps = !filtered
+    ? [
       import(`${miloLibs}/features/spectrum-web-components/dist/theme.js`),
       import(`${miloLibs}/features/spectrum-web-components/dist/button.js`),
       import(`${miloLibs}/features/spectrum-web-components/dist/search.js`),
       import(`${miloLibs}/features/spectrum-web-components/dist/overlay.js`),
       import(`${miloLibs}/features/spectrum-web-components/dist/menu.js`),
       import(`${miloLibs}/features/spectrum-web-components/dist/popover.js`),
-    ]);
-  }
+    ] : [];
 
   const preferences = {};
 
@@ -261,6 +259,6 @@ export default async function init(el) {
     }
     el.replaceWith(merchCards);
   }
-  await allStyles;
+  await Promise.all([...deps, merchStyles, merchCardStyles]);
   return merchCards;
 }
