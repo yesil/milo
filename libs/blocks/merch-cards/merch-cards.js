@@ -89,18 +89,15 @@ async function initMerchCards(config, type, filtered, el, preferences) {
   await makePause();
   // Replace placeholders
   cardsRoot.innerHTML = await replaceText(cardsRoot.innerHTML, config);
+
   await makePause();
-  const autoBlocks = decorateLinks(cardsRoot).map(loadBlock);
+  const processAutoBlocks = async (cardEl) => {
+    await Promise.all(decorateLinks(cardEl).map(loadBlock));
+    await loadBlock(cardEl);
+  };
+  const blocks = [...cardsRoot.querySelectorAll(':scope > div')].map(processAutoBlocks);
+
   const batchSize = 3;
-  for (let i = 0; i < autoBlocks.length; i += batchSize) {
-    const batch = autoBlocks.slice(i, i + batchSize);
-    await batch;
-    await makePause();
-  }
-
-  await makePause();
-  const blocks = [...cardsRoot.querySelectorAll(':scope > div')].map(loadBlock);
-
   // process merch card blocks in batches of 3.
   for (let i = 0; i < blocks.length; i += batchSize) {
     const batch = blocks.slice(i, i + batchSize);
