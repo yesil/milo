@@ -106,13 +106,11 @@ async function getApp() {
 export default async function main(el) {
   performance.mark('swc-demo:start');
   const { base } = getConfig();
-  Promise.all([
-    import(`${base}/features/spectrum-web-components/dist/theme.js`),
-    import(`${base}/features/spectrum-web-components/dist/button.js`),
-    import(`${base}/features/spectrum-web-components/dist/picker.js`),
-    import(`${base}/features/spectrum-web-components/dist/checkbox.js`),
-    import(`${base}/features/spectrum-web-components/dist/textfield.js`),
-  ]);
+  import(`${base}/features/spectrum-web-components/dist/theme.js`);
+  import(`${base}/features/spectrum-web-components/dist/button.js`);
+  import(`${base}/features/spectrum-web-components/dist/picker.js`);
+  import(`${base}/features/spectrum-web-components/dist/checkbox.js`);
+  import(`${base}/features/spectrum-web-components/dist/textfield.js`);
 
   el.replaceWith(await getApp());
 
