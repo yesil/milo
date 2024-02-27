@@ -5,6 +5,9 @@ import { processTrackingLabels } from '../../martech/attributes.js';
 import { replaceKey } from '../../features/placeholders.js';
 import '../../deps/merch-card.js';
 
+// eslint-disable-next-line no-promise-executor-return
+const makePause = async (timeout = 0) => new Promise((resolve) => setTimeout(resolve, timeout));
+
 const PRODUCT_NAMES = [
   'acrobat-pdf-pack',
   'acrobat-pro-2020',
@@ -366,6 +369,7 @@ const init = async (el) => {
       }
     }
   }
+  await makePause();
   const merchCard = createTag('merch-card', { class: styles.join(' '), 'data-block': '' });
   merchCard.setAttribute('variant', cardType);
   if (el.dataset.removedManifestId) {
@@ -384,6 +388,7 @@ const init = async (el) => {
   }
   const { categories = ['all'], types = [] } = tags;
   if (el.firstElementChild) {
+    await makePause();
     const badgeMetadata = el.firstElementChild.querySelector('ul,h2') === null
   && el.firstElementChild.innerText.includes('#') ? el.firstElementChild : null;
     if (badgeMetadata !== null) {
@@ -421,6 +426,7 @@ const init = async (el) => {
       }
     }
   });
+  await makePause();
   const actionMenuContent = cardType === 'catalog'
     ? getActionMenuContent(el)
     : null;
