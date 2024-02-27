@@ -30,7 +30,7 @@ const LITERAL_SLOTS = [
 
 // allows improve TBT by returning control to the main thread.
 // eslint-disable-next-line no-promise-executor-return
-const makePause = async () => new Promise((resolve) => setTimeout(resolve, 1));
+const makePause = async () => new Promise((resolve) => setTimeout(resolve, 0));
 
 const fail = (el, err = '') => {
   window.lana?.log(`Failed to initialize merch cards: ${err}`);
@@ -93,6 +93,7 @@ async function initMerchCards(config, type, filtered, el, preferences) {
   await makePause();
   const processAutoBlocks = async (cardEl) => {
     await Promise.all(decorateLinks(cardEl).map(loadBlock));
+    await makePause();
     await loadBlock(cardEl);
   };
   const blocks = [...cardsRoot.querySelectorAll(':scope > div')].map(processAutoBlocks);
