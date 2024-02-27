@@ -101,8 +101,7 @@ async function initMerchCards(config, type, filtered, el, preferences) {
   };
   const blocks = [...cardsRoot.querySelectorAll(':scope > div')].map(processAutoBlocks);
 
-  const batchSize = 1;
-  // process merch card blocks in batches of 3.
+  const batchSize = 12;
   for (let i = 0; i < blocks.length; i += batchSize) {
     const batch = blocks.slice(i, i + batchSize);
     await Promise.all(batch);
