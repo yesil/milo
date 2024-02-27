@@ -9,6 +9,10 @@ export const decorateMnemonicList = (container) => {
   [...rows].forEach((paragraph) => {
     const title = paragraph.querySelector('strong');
     const picture = paragraph.querySelector('picture');
+    if (picture) {
+      picture.firstElementChild.setAttribute('width', '24');
+      picture.firstElementChild.setAttribute('height', '24');
+    }
     const product = createTag('div', { class: 'product-item' });
     if (picture) product.appendChild(picture);
     if (title) product.appendChild(title);

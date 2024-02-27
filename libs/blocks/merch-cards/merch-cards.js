@@ -90,17 +90,12 @@ async function initMerchCards(config, type, filtered, el, preferences) {
   // Replace placeholders
   cardsRoot.innerHTML = await replaceText(cardsRoot.innerHTML, config);
 
+  performance.mark('merch-cards:decorateLinks:start');
+  await Promise.all(decorateLinks(cardsRoot).map(loadBlock));
+  performance.mark('merch-cards:decorateLinks:end');
+  performance.measure('merch-cards:decorateLinks', 'merch-cards:decorateLinks:start', 'merch-cards:decorateLinks:end');
   await makePause();
-  const processAutoBlocks = async (cardEl) => {
-    performance.mark(`blockStart: ${cardEl.className}`);
-    await Promise.all(decorateLinks(cardEl).map(loadBlock));
-    performance.mark(`blockEnd: ${cardEl.className}`);
-    performance.measure(`block: ${cardEl.className}`, `blockStart: ${cardEl.className}`, `blockEnd: ${cardEl.className}`);
-    await makePause();
-    await loadBlock(cardEl);
-  };
-  const blocks = [...cardsRoot.querySelectorAll(':scope > div')].map(processAutoBlocks);
-
+  const blocks = [...cardsRoot.querySelectorAll(':scope > div')].map(loadBlock);
   const batchSize = 12;
   for (let i = 0; i < blocks.length; i += batchSize) {
     const batch = blocks.slice(i, i + batchSize);
