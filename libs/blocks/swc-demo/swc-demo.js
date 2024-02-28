@@ -108,6 +108,7 @@ export default async function main(el) {
   const { base } = getConfig();
   const app = getApp();
   const deps = Promise.all([
+    app,
     import(`${base}/features/spectrum-web-components/dist/theme.js`),
     import(`${base}/features/spectrum-web-components/dist/base.js`),
     import(`${base}/features/spectrum-web-components/dist/shared.js`),
@@ -115,7 +116,6 @@ export default async function main(el) {
     import(`${base}/features/spectrum-web-components/dist/picker.js`),
     import(`${base}/features/spectrum-web-components/dist/checkbox.js`),
     import(`${base}/features/spectrum-web-components/dist/textfield.js`),
-    app,
   ]);
 
   await deps;
