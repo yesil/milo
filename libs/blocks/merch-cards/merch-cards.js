@@ -1,6 +1,4 @@
-import {
-  createTag, decorateLinks, getConfig, loadBlock, loadStyle,
-} from '../../utils/utils.js';
+import { createTag, decorateLinks, getConfig, loadBlock, loadStyle } from '../../utils/utils.js';
 import { replaceText } from '../../features/placeholders.js';
 
 const DIGITS_ONLY = /^\d+$/;
@@ -139,13 +137,17 @@ export default async function init(el) {
   }
 
   const merchCardsDep = import('../../deps/merch-cards.js');
+  const merchDep = import('../merch/merch.js');
   let deps = [
     merchCardsDep,
+    merchDep,
     import('../../deps/merch-card.js'),
     import('../../deps/commerce.js'),
-    import('../merch/merch.js'),
     import('../merch-card/merch-card.js'),
   ];
+
+  const { initService } = await merchDep;
+  initService();
 
   const { miloLibs } = getConfig();
   const merchStyles = new Promise((resolve) => {
