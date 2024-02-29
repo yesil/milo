@@ -136,6 +136,10 @@ export default async function init(el) {
     return fail(el, 'Missing queryIndexCardPath config');
   }
 
+  const type = el.classList[1];
+  const cardsData = await fetchCardsData(config, type, el);
+  const cardsRootPromise = getCardsRoot(config, cardsData);
+
   const merchCardsDep = import('../../deps/merch-cards.js');
   let deps = [
     merchCardsDep,
@@ -230,9 +234,6 @@ export default async function init(el) {
     }
   }
 
-  const type = el.classList[1];
-  const cardsData = await fetchCardsData(config, type, el);
-  const cardsRoot = await getCardsRoot(config, cardsData);
   await merchCardsDep;
   const merchCards = createTag('merch-cards', attributes);
   if (literalSlots.length > 0) {
@@ -240,6 +241,8 @@ export default async function init(el) {
   } else if (!merchCards.filtered) {
     merchCards.filtered = 'all';
   }
+
+  const cardsRoot = await cardsRootPromise;
   await initMerchCards(attributes.filtered, preferences, cardsRoot);
   const cards = [...cardsRoot.children];
   const batchSize = 3;
