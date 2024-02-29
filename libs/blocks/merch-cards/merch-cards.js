@@ -1,8 +1,3 @@
-import '../../deps/merch-cards.js';
-import '../../deps/merch-card.js';
-import '../../deps/commerce.js';
-import '../merch/merch.js';
-import '../merch-card/merch-card.js';
 import {
   createTag, decorateLinks, decorateSVG, getConfig, loadBlock, loadStyle,
 } from '../../utils/utils.js';
@@ -67,10 +62,10 @@ export function parsePreferences(elements) {
   });
 }
 
-async function initMerchCards(config, type, filtered, el, preferences) {
+/** Retrieve cards from query-index  */
+async function fetchCardsData(config, type, el) {
   let cardsData;
   let err;
-
   try {
     const res = await fetch(`${config?.locale?.prefix ?? ''}${config.queryIndexCardPath}.json?sheet=${type}`);
     if (res.ok) {
@@ -84,32 +79,43 @@ async function initMerchCards(config, type, filtered, el, preferences) {
   if (!cardsData) {
     fail(el, err);
   }
+  return cardsData;
+}
 
+/** Parse andd prepare cards */
+async function getCardsRoot(config, cardsData) {
   const cards = `<div>${cardsData.data.map(({ cardContent }) => cardContent).join('\n')}</div>`;
   const fragment = document.createRange().createContextualFragment(cards);
   const cardsRoot = fragment.firstElementChild;
   await makePause();
   // Replace placeholders
   cardsRoot.innerHTML = await replaceText(cardsRoot.innerHTML, config);
-  await makePause();
-  performance.mark('merch-cards:decorateLinks:start');
+  performance.mark('merch-cards:decorateSVG:start');
   [...cardsRoot.querySelectorAll('a[href$=".svg"]')].forEach((a) => {
     decorateSVG(a);
     a.setAttribute('href', '');
   });
+  performance.mark('merch-cards:decorateSVG:end');
+  performance.measure('merch-cards:decorateSVG', 'merch-cards:decorateSVG:start', 'merch-cards:decorateSVG:end');
   await makePause();
+  performance.mark('merch-cards:decorateLinks:start');
   await Promise.all(decorateLinks(cardsRoot).map(loadBlock));
   performance.mark('merch-cards:decorateLinks:end');
   performance.measure('merch-cards:decorateLinks', 'merch-cards:decorateLinks:start', 'merch-cards:decorateLinks:end');
   await makePause();
+  performance.mark('merch-cards:initCards:start');
   const blocks = [...cardsRoot.querySelectorAll(':scope > div')].map(loadBlock);
   const batchSize = 12;
   for (let i = 0; i < blocks.length; i += batchSize) {
     const batch = blocks.slice(i, i + batchSize);
     await Promise.all(batch);
-    await makePause();
   }
+  performance.mark('merch-cards:initCards:end');
+  performance.measure('merch-cards:initCards', 'merch-cards:initCards:start', 'merch-cards:initCards:end');
+  return cardsRoot;
+}
 
+async function initMerchCards(filtered, preferences, cardsRoot) {
   if (filtered) {
     filterMerchCards(cardsRoot, filtered);
   }
@@ -141,6 +147,15 @@ export default async function init(el) {
     return fail(el, 'Missing queryIndexCardPath config');
   }
 
+  const merchCardsDep = import('../../deps/merch-cards.js');
+  let deps = [
+    merchCardsDep,
+    import('../../deps/merch-card.js'),
+    import('../../deps/commerce.js'),
+    import('../merch/merch.js'),
+    import('../merch-card/merch-card.js'),
+  ];
+
   const { miloLibs } = getConfig();
   const merchStyles = new Promise((resolve) => {
     loadStyle(`${miloLibs}/blocks/merch/merch.css`, resolve);
@@ -149,13 +164,14 @@ export default async function init(el) {
     loadStyle(`${miloLibs}/blocks/merch-card/merch-card.css`, resolve);
   });
 
-  const attributes = { filter: 'all', class: CLASS_LOADING };
+  const attributes = { filter: 'all', class: `${el.className} ${CLASS_LOADING}` };
   const settingsEl = el.firstElementChild?.firstElementChild;
 
   const filtered = settingsEl?.firstElementChild?.tagName === 'STRONG';
 
-  const deps = !filtered
+  deps = !filtered
     ? [
+      ...deps,
       import(`${miloLibs}/features/spectrum-web-components/dist/theme.js`),
       import(`${miloLibs}/features/spectrum-web-components/dist/button.js`),
       import(`${miloLibs}/features/spectrum-web-components/dist/search.js`),
@@ -228,44 +244,35 @@ export default async function init(el) {
   }
 
   const type = el.classList[1];
+  const cardsData = await fetchCardsData(config, type, el);
+  const cardsRoot = await getCardsRoot(config, cardsData);
+  await merchCardsDep;
   const merchCards = createTag('merch-cards', attributes);
   if (literalSlots.length > 0) {
     merchCards.append(...literalSlots);
   } else if (!merchCards.filtered) {
     merchCards.filtered = 'all';
   }
-  await initMerchCards(config, type, attributes.filtered, el, preferences)
-    .then((async (cardsRoot) => {
-      const cards = [...cardsRoot.children];
-      const batchSize = 3;
-      for (let i = 0; i < cards.length; i += batchSize) {
-        const batch = cards.slice(i, i + batchSize);
-        merchCards.append(...batch);
-        if (i === batchSize) {
-          // avoid layout shift due to size of first cards.
-          merchCards.requestUpdate();
-        }
-        await makePause();
-      }
-      merchCards.updateComplete.then(() => {
-        merchCards.classList.remove(CLASS_LOADING);
-      });
-      merchCards.displayResult = true;
+  await initMerchCards(attributes.filtered, preferences, cardsRoot);
+  const cards = [...cardsRoot.children];
+  const batchSize = 3;
+  for (let i = 0; i < cards.length; i += batchSize) {
+    const batch = cards.slice(i, i + batchSize);
+    merchCards.append(...batch);
+    if (i === batchSize) {
+      // avoid layout shift due to size of first cards.
+      merchCards.requestUpdate();
     }
-    ));
-
-  const appContainer = document.querySelector('.merch.app');
-
-  if (appContainer) {
-    merchCards.classList.add('four-merch-cards', type);
-    appContainer.appendChild(merchCards);
-    el.remove();
-  } else {
-    if (!el.closest('main > .section[class*="-merch-card"]')) {
-      el.closest('main > .section').classList.add('four-merch-cards', type);
-    }
-    el.replaceWith(merchCards);
+    await makePause();
   }
+  merchCards.updateComplete.then(() => {
+    merchCards.classList.remove(CLASS_LOADING);
+  });
+  if (!el.matches('[class*="-merch-card"]') || !el.closest('main > .section[class*="-merch-card"]')) {
+    el.closest('main > .section').classList.add('four-merch-cards', type);
+  }
+  merchCards.displayResult = true;
+  el.replaceWith(merchCards);
   await Promise.all([...deps, merchStyles, merchCardStyles]);
   return merchCards;
 }
