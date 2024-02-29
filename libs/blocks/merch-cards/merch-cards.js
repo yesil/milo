@@ -259,7 +259,7 @@ export default async function init(el) {
     el.closest('main > .section').classList.add('four-merch-cards', type);
   }
   merchCards.displayResult = true;
-  await Promise.all([...deps, merchStyles, merchCardStyles]);
+  await Promise.all([merchStyles, merchCardStyles, ...deps]);
   performance.mark('merch-cards-render:start');
   el.replaceWith(merchCards);
   await merchCards.updateComplete;
