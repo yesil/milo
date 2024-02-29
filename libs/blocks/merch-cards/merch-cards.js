@@ -65,7 +65,7 @@ async function fetchCardsData(config, type, el) {
   let cardsData;
   let err;
   try {
-    const res = await fetch(`${config?.locale?.prefix ?? ''}${config.queryIndexCardPath}.json?sheet=${type}`);
+    const res = await fetch(`${config?.locale?.prefix ?? ''}${config.queryIndexCardPath}.json?sheet=${type}&limit=0`);
     if (res.ok) {
       cardsData = await res.json();
     } else {
