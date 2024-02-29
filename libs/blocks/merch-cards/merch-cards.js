@@ -1,5 +1,5 @@
 import {
-  createTag, decorateLinks, decorateSVG, getConfig, loadBlock, loadStyle,
+  createTag, decorateLinks, getConfig, loadBlock, loadStyle,
 } from '../../utils/utils.js';
 import { replaceText } from '../../features/placeholders.js';
 
