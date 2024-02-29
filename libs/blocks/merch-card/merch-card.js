@@ -6,7 +6,7 @@ import { replaceKey } from '../../features/placeholders.js';
 import '../../deps/merch-card.js';
 
 // eslint-disable-next-line no-promise-executor-return
-const makePause = async (timeout = 0) => new Promise((resolve) => setTimeout(resolve, timeout));
+const makePause = async (timeout = 1) => new Promise((resolve) => setTimeout(resolve, timeout));
 
 const PRODUCT_NAMES = [
   'acrobat-pdf-pack',
