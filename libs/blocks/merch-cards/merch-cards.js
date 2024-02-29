@@ -109,6 +109,7 @@ async function getCardsRoot(config, cardsData) {
   for (let i = 0; i < blocks.length; i += batchSize) {
     const batch = blocks.slice(i, i + batchSize);
     await Promise.all(batch);
+    await makePause();
   }
   performance.mark('merch-cards:initCards:end');
   performance.measure('merch-cards:initCards', 'merch-cards:initCards:start', 'merch-cards:initCards:end');
