@@ -137,17 +137,11 @@ export default async function init(el) {
   }
 
   const merchCardsDep = import('../../deps/merch-cards.js');
-  const merchDep = import('../merch/merch.js');
   let deps = [
     merchCardsDep,
-    merchDep,
-    import('../../deps/merch-card.js'),
-    import('../../deps/commerce.js'),
     import('../merch-card/merch-card.js'),
+    import('../../deps/merch-card.js'),
   ];
-
-  const { initService } = await merchDep;
-  initService();
 
   const { miloLibs } = getConfig();
   const merchStyles = new Promise((resolve) => {
