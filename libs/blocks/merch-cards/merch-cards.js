@@ -268,7 +268,7 @@ export default async function init(el) {
   merchCards.updateComplete.then(() => {
     merchCards.classList.remove(CLASS_LOADING);
   });
-  if (!el.matches('[class*="-merch-card"]') || !el.closest('main > .section[class*="-merch-card"]')) {
+  if (!el.matches('[class*="-merch-card"]') && !el.closest('main > .section[class*="-merch-card"]')) {
     el.closest('main > .section').classList.add('four-merch-cards', type);
   }
   merchCards.displayResult = true;
