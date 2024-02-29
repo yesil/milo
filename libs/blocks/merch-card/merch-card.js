@@ -468,12 +468,14 @@ const init = async (el) => {
   }
 
   addStock(merchCard, styles);
+
   if (styles.includes('secure')) {
     await replaceKey('secure-transaction', getConfig()).then((key) => merchCard.setAttribute('secure-label', key));
   }
   merchCard.setAttribute('filters', categories.join(','));
   merchCard.setAttribute('types', types.join(','));
   parseContent(el, merchCard);
+  await makePause();
   const footer = createTag('div', { slot: 'footer' });
   if (ctas) {
     if (merchCard.variant === 'mini-compare-chart') {
@@ -509,8 +511,8 @@ const init = async (el) => {
     merchCard.setAttribute('custom-hr', true);
   }
   decorateFooterRows(merchCard, footerRows);
-  el.replaceWith(merchCard);
   decorateMerchCardLinkAnalytics(merchCard);
+  el.replaceWith(merchCard);
   return merchCard;
 };
 
