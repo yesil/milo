@@ -85,30 +85,19 @@ async function fetchCardsData(config, type, el) {
 /** Parse andd prepare cards */
 async function getCardsRoot(config, cardsData) {
   const cards = `<div>${cardsData.data.map(({ cardContent }) => cardContent).join('\n')}</div>`;
-  const fragment = document.createRange().createContextualFragment(cards);
+  const fragment = document.createRange().createContextualFragment(
+    await replaceText(cards, config),
+  );
   const cardsRoot = fragment.firstElementChild;
   await makePause();
-  // Replace placeholders
-  cardsRoot.innerHTML = await replaceText(cardsRoot.innerHTML, config);
-  performance.mark('merch-cards:decorateSVG:start');
-  [...cardsRoot.querySelectorAll('a[href$=".svg"]')].forEach((a) => {
-    decorateSVG(a);
-    a.setAttribute('href', '');
-  });
-  performance.mark('merch-cards:decorateSVG:end');
-  performance.measure('merch-cards:decorateSVG', 'merch-cards:decorateSVG:start', 'merch-cards:decorateSVG:end');
-  await makePause();
-  performance.mark('merch-cards:decorateLinks:start');
-  await Promise.all(decorateLinks(cardsRoot).map(loadBlock));
-  performance.mark('merch-cards:decorateLinks:end');
-  performance.measure('merch-cards:decorateLinks', 'merch-cards:decorateLinks:start', 'merch-cards:decorateLinks:end');
-  await makePause();
   performance.mark('merch-cards:initCards:start');
-  const blocks = [...cardsRoot.querySelectorAll(':scope > div')].map(loadBlock);
+  const allBlockEls = [...cardsRoot.querySelectorAll(':scope > div')];
   const batchSize = 3;
-  for (let i = 0; i < blocks.length; i += batchSize) {
-    const batch = blocks.slice(i, i + batchSize);
-    await Promise.all(batch);
+  for (let i = 0; i < allBlockEls.length; i += batchSize) {
+    const blockEls = allBlockEls.slice(i, i + batchSize);
+    await Promise.all(blockEls.map((cardEl) => Promise.all(
+      decorateLinks(cardEl).map(loadBlock),
+    ).then(() => loadBlock(cardEl))));
     await makePause();
   }
   performance.mark('merch-cards:initCards:end');
