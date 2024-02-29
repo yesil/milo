@@ -90,7 +90,7 @@ async function getCardsRoot(config, cardsData) {
   await makePause();
   performance.mark('merch-cards:initCards:start');
   const allBlockEls = [...cardsRoot.querySelectorAll(':scope > div')];
-  const batchSize = 9;
+  const batchSize = 3;
   for (let i = 0; i < allBlockEls.length; i += batchSize) {
     const blockEls = allBlockEls.slice(i, i + batchSize);
     await Promise.all(blockEls.map((cardEl) => Promise.all(
