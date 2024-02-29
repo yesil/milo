@@ -72,7 +72,7 @@ build({
   entryPoints: ['./src/lit.js'],
   platform: 'browser',
   format: 'esm',
-  sourcemap: false,
+  sourcemap: true,
   target: TARGET,
   minify: true,
   outfile: '../../deps/lit-all.min.js',
