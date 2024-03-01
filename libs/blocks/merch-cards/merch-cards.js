@@ -3,8 +3,6 @@ import { replaceText } from '../../features/placeholders.js';
 
 const DIGITS_ONLY = /^\d+$/;
 
-const CLASS_LOADING = 'loading';
-
 const LITERAL_SLOTS = [
   'searchText',
   'filtersText',
@@ -155,7 +153,7 @@ export default async function init(el) {
     loadStyle(`${miloLibs}/blocks/merch-card/merch-card.css`, resolve);
   });
 
-  const attributes = { filter: 'all', class: `${el.className} ${CLASS_LOADING}` };
+  const attributes = { filter: 'all', class: `${el.className}` };
   const settingsEl = el.firstElementChild?.firstElementChild;
 
   const filtered = settingsEl?.firstElementChild?.tagName === 'STRONG';
@@ -244,23 +242,12 @@ export default async function init(el) {
 
   const cardsRoot = await cardsRootPromise;
   await initMerchCards(attributes.filtered, preferences, cardsRoot);
-  const cards = [...cardsRoot.children];
-  const batchSize = 3;
-  for (let i = 0; i < cards.length; i += batchSize) {
-    const batch = cards.slice(i, i + batchSize);
-    merchCards.append(...batch);
-    if (i === batchSize) {
-      // avoid layout shift due to size of first cards.
-      merchCards.requestUpdate();
-    }
-    await makePause();
-  }
-  merchCards.updateComplete.then(() => {
-    merchCards.classList.remove(CLASS_LOADING);
-  });
+
   if (!el.matches('[class*="-merch-card"]') && !el.closest('main > .section[class*="-merch-card"]')) {
     el.closest('main > .section').classList.add('four-merch-cards', type);
   }
+
+  merchCards.append(...cardsRoot.children);
   merchCards.displayResult = true;
   await Promise.all([merchStyles, merchCardStyles, ...deps]);
   performance.mark('merch-cards-render:start');
