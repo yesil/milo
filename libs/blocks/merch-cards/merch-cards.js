@@ -255,6 +255,5 @@ export default async function init(el) {
   await merchCards.updateComplete;
   performance.mark('merch-cards-render:end');
   performance.measure('merch-cards-render', 'merch-cards-render:start', 'merch-cards-render:end');
-  await makePause(100);
   return merchCards;
 }
