@@ -63,7 +63,7 @@ async function fetchCardsData(config, type, el) {
   let cardsData;
   let err;
   try {
-    const res = await fetch(`${config?.locale?.prefix ?? ''}${config.queryIndexCardPath}.json?sheet=${type}&limit=6`);
+    const res = await fetch(`${config?.locale?.prefix ?? ''}${config.queryIndexCardPath}.json?sheet=${type}`);
     if (res.ok) {
       cardsData = await res.json();
     } else {
@@ -88,7 +88,7 @@ async function getCardsRoot(config, cardsData) {
   await makePause();
   performance.mark('merch-cards:initCards:start');
   const allBlockEls = [...cardsRoot.querySelectorAll(':scope > div')];
-  const batchSize = 9;
+  const batchSize = 4;
   for (let i = 0; i < allBlockEls.length; i += batchSize) {
     const blockEls = allBlockEls.slice(i, i + batchSize);
     await Promise.all(blockEls.map((cardEl) => Promise.all(
