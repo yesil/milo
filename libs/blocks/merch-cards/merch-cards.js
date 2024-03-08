@@ -135,8 +135,7 @@ export default async function init(el) {
   }
 
   const type = el.classList[1];
-  const cardsData = await fetchCardsData(config, type, el);
-  const cardsRootPromise = getCardsRoot(config, cardsData);
+  const cardsData = fetchCardsData(config, type, el);
 
   const merchCardsDep = import('../../deps/merch-cards.js');
   let deps = [
@@ -152,6 +151,8 @@ export default async function init(el) {
   const merchCardStyles = new Promise((resolve) => {
     loadStyle(`${miloLibs}/blocks/merch-card/merch-card.css`, resolve);
   });
+
+  const cardsRootPromise = getCardsRoot(config, await cardsData);
 
   const attributes = { filter: 'all', class: `${el.className}` };
   const settingsEl = el.firstElementChild?.firstElementChild;
