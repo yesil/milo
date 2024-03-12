@@ -248,7 +248,7 @@ export default async function init(el) {
     el.closest('main > .section').classList.add('four-merch-cards', type);
   }
 
-  merchCards.append(...cardsRoot.children);
+  merchCards.cards = [...cardsRoot.children];
   merchCards.displayResult = true;
   await Promise.all([merchStyles, merchCardStyles, ...deps]);
   performance.mark('merch-cards-render:start');

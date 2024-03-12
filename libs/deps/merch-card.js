@@ -1,4 +1,4 @@
-// Fri, 08 Mar 2024 15:17:08 GMT
+// Tue, 12 Mar 2024 12:42:23 GMT
 import{html as n,LitElement as T}from"/libs/deps/lit-all.min.js";import{css as x,unsafeCSS as p}from"/libs/deps/lit-all.min.js";var h="(max-width: 767px)";var i="(min-width: 768px)",c="(min-width: 1200px)",s="(min-width: 1600px)";var y=x`
     :host {
         position: relative;
@@ -419,6 +419,10 @@ import{html as n,LitElement as T}from"/libs/deps/lit-all.min.js";import{css as x
 }
 
 merch-cards {
+    display: contents;
+}
+
+merch-cards > .cards {
     display: contents;
 }
 
@@ -1094,23 +1098,23 @@ merch-card .footer-row-cell:nth-child(8) {
     min-height: var(--consonant-merch-card-footer-row-8-min-height);
 }
 
-`;document.head.appendChild(C);var S="MERCH-CARD",M="merch-card",_=32,A="mini-compare-chart",L=m=>`--consonant-merch-card-footer-row-${m}-min-height`,b=class extends T{static properties={name:{type:String},variant:{type:String,reflect:!0},size:{type:String,attribute:"size",reflect:!0},badgeColor:{type:String,attribute:"badge-color"},badgeBackgroundColor:{type:String,attribute:"badge-background-color"},badgeText:{type:String,attribute:"badge-text"},icons:{type:Array},actionMenu:{type:Boolean,attribute:"action-menu"},title:{type:String},description:{type:String},customHr:{type:Boolean,attribute:"custom-hr"},detailBg:{type:String,attribute:"detail-bg"},secureLabel:{type:String,attribute:"secure-label"},checkboxLabel:{type:String,attribute:"checkbox-label"},stockOfferOsis:{type:Object,attribute:"stock-offer-osis",converter:{fromAttribute:e=>{let[r,t,a]=e.split(",");return{PUF:r,ABM:t,M2M:a}}}},filters:{type:String,reflect:!0,converter:{fromAttribute:e=>Object.fromEntries(e.split(",").map(r=>{let[t,a,o]=r.split(":"),d=Number(a);return[t,{order:isNaN(d)?void 0:d,size:o}]})),toAttribute:e=>Object.entries(e).map(([r,{order:t,size:a}])=>[r,t,a].filter(o=>o!=null).join(":")).join(",")}},types:{type:String,attribute:"types",reflect:!0}};static styles=[y,...w()];constructor(){super(),this.filters={},this.types=""}#e;updated(e){e.has("badgeBackgroundColor")&&(this.style.border=`1px solid ${this.badgeBackgroundColor}`),this.updateComplete.then(()=>this.adjustFooterRows())}renderIcons(){return this.icons&&this.icons.length>0?n`
-                  <div class="icons">
-                      ${this.icons.map(e=>{let r=this.querySelector('div[slot="body-xs"]')?.querySelector('a[href$="#mnemonic-link"]');return r&&(r.href=r.href.replace("#mnemonic-link","")),r?n`
-                                    <a href="${r.href||"#"}">
-                                        <img
-                                            src="${e.src}"
-                                            alt="${e.alt}"
-                                            loading="lazy"
-                                        />
-                                    </a>
-                                `:n`<img
-                                    src="${e.src}"
-                                    alt="${e.alt}"
-                                    loading="lazy"
-                                />`})}
-                  </div>
-              `:""}get evergreen(){return this.classList.contains("intro-pricing")}get stockCheckbox(){return this.checkboxLabel?n`<label id="stock-checkbox">
+`;document.head.appendChild(C);var S="MERCH-CARD",M="merch-card",_=32,A="mini-compare-chart",L=m=>`--consonant-merch-card-footer-row-${m}-min-height`,b=class extends T{static properties={name:{type:String},variant:{type:String,reflect:!0},size:{type:String,attribute:"size",reflect:!0},badgeColor:{type:String,attribute:"badge-color"},badgeBackgroundColor:{type:String,attribute:"badge-background-color"},badgeText:{type:String,attribute:"badge-text"},icons:{type:Array},actionMenu:{type:Boolean,attribute:"action-menu"},title:{type:String},description:{type:String},customHr:{type:Boolean,attribute:"custom-hr"},detailBg:{type:String,attribute:"detail-bg"},secureLabel:{type:String,attribute:"secure-label"},checkboxLabel:{type:String,attribute:"checkbox-label"},stockOfferOsis:{type:Object,attribute:"stock-offer-osis",converter:{fromAttribute:e=>{let[r,t,a]=e.split(",");return{PUF:r,ABM:t,M2M:a}}}},filters:{type:String,reflect:!0,converter:{fromAttribute:e=>Object.fromEntries(e.split(",").map(r=>{let[t,a,o]=r.split(":"),d=Number(a);return[t,{order:isNaN(d)?void 0:d,size:o}]})),toAttribute:e=>Object.entries(e).map(([r,{order:t,size:a}])=>[r,t,a].filter(o=>o!=null).join(":")).join(",")}},types:{type:String,attribute:"types",reflect:!0}};static styles=[y,...w()];constructor(){super(),this.filters={},this.types=""}#e;updated(e){e.has("badgeBackgroundColor")&&(this.style.border=`1px solid ${this.badgeBackgroundColor}`),this.updateComplete.then(()=>this.adjustFooterRows())}renderIcons(){return!this.icons||this.icons.length===0?n`<slot name="icons"></slot>`:n`
+            <div class="icons">
+                ${this.icons.map(e=>{let r=this.querySelector('div[slot="body-xs"]')?.querySelector('a[href$="#mnemonic-link"]');return r&&(r.href=r.href.replace("#mnemonic-link","")),r?n`
+                              <a href="${r.href||"#"}">
+                                  <img
+                                      src="${e.src}"
+                                      alt="${e.alt}"
+                                      loading="lazy"
+                                  />
+                              </a>
+                          `:n`<img
+                              src="${e.src}"
+                              alt="${e.alt}"
+                              loading="lazy"
+                          />`})}
+            </div>
+        `}get evergreen(){return this.classList.contains("intro-pricing")}get stockCheckbox(){return this.checkboxLabel?n`<label id="stock-checkbox">
                     <input type="checkbox" @change=${this.toggleStockOffer}></input>
                     <span></span>
                     ${this.checkboxLabel}
