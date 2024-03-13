@@ -111,21 +111,11 @@ const MULTI_OFFER_CARDS = ['plans', 'product', MINI_COMPARE_CHART];
 // Force cards to refresh once they become visible so that the footer rows are properly aligned.
 const intersectionObserver = new IntersectionObserver((entries) => {
   entries.forEach((entry) => {
-    const container = entry.target.closest('main > div:not([data-status])');
-    if (!container) return;
-    [...container.querySelectorAll('merch-card')].forEach((card) => card.requestUpdate());
+    if (entry.target.clientHeight === 0) return;
     intersectionObserver.unobserve(entry.target);
+    entry.target.requestUpdate();
   });
 });
-
-const addTabClickListener = (container) => {
-  const buttons = document.querySelectorAll('button[role="tab"]');
-  buttons.forEach((button) => {
-    button.addEventListener('click', () => {
-      intersectionObserver.observe(container);
-    });
-  });
-};
 
 const textStyles = {
   H5: 'detail-m',
@@ -414,10 +404,6 @@ const init = async (el) => {
   let footerRows;
   if (cardType === MINI_COMPARE_CHART) {
     intersectionObserver.observe(merchCard);
-    const container = el.closest('[data-status="decorated"]');
-    if (container) {
-      addTabClickListener(container);
-    }
     footerRows = getMiniCompareChartFooterRows(el);
   }
   const images = el.querySelectorAll('picture');
