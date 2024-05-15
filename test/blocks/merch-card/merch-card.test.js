@@ -384,7 +384,7 @@ describe('Merch Card with Offer Selection', () => {
     expect(quantitySelect.getAttribute('step')).to.equal('1');
   });
 
-  it.only('Change quantity select ', async () => {
+  it('Change quantity select ', async () => {
     document.body.innerHTML = await readFile({ path: './mocks/selection-cards.html' });
     await init(document.querySelector('.quantity-select'));
     await delay();
