@@ -125,6 +125,17 @@ const parseContent = async (el, merchCard) => {
     if (mnemonicList) bodySlot.append(mnemonicList);
   });
 
+  const mnemonicLink = merchCard.querySelector('a[href*="#mnemonic-link"]');
+  if (mnemonicLink) {
+    const link = mnemonicLink.getAttribute('href').replace('#mnemonic-link', '');
+    mnemonicLink.setAttribute('href', link);
+    const a = createTag('a', { href: link, slot: merchCard.titleElement.getAttribute('slot') });
+    const { titleElement } = merchCard;
+    titleElement.replaceWith(a);
+    titleElement.removeAttribute('slot');
+    a.appendChild(titleElement);
+  }
+
   if (merchCard.variant === MINI_COMPARE_CHART && merchCard.childNodes[1]) {
     merchCard.insertBefore(bodySlot, merchCard.childNodes[1]);
   }
@@ -384,6 +395,7 @@ const init = async (el) => {
     imageSlot.appendChild(image);
     merchCard.appendChild(imageSlot);
   }
+  parseContent(el, merchCard);
   if (!icons || icons.length > 0) {
     const iconImgs = Array.from(icons).map((icon) => {
       const img = {
@@ -392,10 +404,11 @@ const init = async (el) => {
       };
       return img;
     });
-    merchCard.setAttribute(
-      'icons',
-      JSON.stringify(Array.from(iconImgs)),
-    );
+    iconImgs.forEach((icon) => {
+      const href = merchCard.titleElement.getAttribute('href') ?? '';
+      const merchIcon = createTag('merch-icon', { slot: 'icons', src: icon.src, alt: icon.alt, href });
+      merchCard.appendChild(merchIcon);
+    });
     icons.forEach((icon) => icon.remove());
   }
 
@@ -405,7 +418,7 @@ const init = async (el) => {
   }
   merchCard.setAttribute('filters', categories.join(','));
   merchCard.setAttribute('types', types.join(','));
-  parseContent(el, merchCard);
+
   const footer = createTag('div', { slot: 'footer' });
   if (ctas) {
     if (merchCard.variant === 'mini-compare-chart') {

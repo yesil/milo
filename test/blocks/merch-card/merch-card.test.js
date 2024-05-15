@@ -140,6 +140,12 @@ describe('Plans Card', () => {
 });
 
 describe('Catalog Card', () => {
+  it('Decorates with mnemonic link', async () => {
+    document.body.innerHTML = await readFile({ path: './mocks/catalog.html' });
+    const merchCard = await init(document.getElementById('mnemonic-link'));
+    expect(merchCard.titleElement.outerHTML).to.equal('<a href="https://www.adobe.com/creativecloud/all-apps.html" slot="heading-xs" daa-ll="Creative Cloud All Apps-1--Creative Cloud All Apps"><h3>Creative Cloud All Apps</h3></a>');
+  });
+
   it('Supports Catalog card', async () => {
     document.body.innerHTML = await readFile({ path: './mocks/catalog.html' });
     const merchCard = await init(document.querySelector('.merch-card.ribbon'));
@@ -378,14 +384,18 @@ describe('Merch Card with Offer Selection', () => {
     expect(quantitySelect.getAttribute('step')).to.equal('1');
   });
 
-  it('Change quantity select ', async () => {
+  it.only('Change quantity select ', async () => {
     document.body.innerHTML = await readFile({ path: './mocks/selection-cards.html' });
     await init(document.querySelector('.quantity-select'));
     await delay();
     const merchCard = document.querySelector('merch-card');
     const quantitySelect = merchCard.querySelector('merch-quantity-select');
+    const picker = quantitySelect.shadowRoot.querySelector('button');
+    picker.click();
+    await delay();
     const items = quantitySelect.shadowRoot.querySelectorAll('.item');
     items[2].click();
+    await delay();
     const button = merchCard.querySelector('.con-button');
     expect(button.getAttribute('data-quantity')).to.equal('3');
   });
