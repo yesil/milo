@@ -1,5 +1,5 @@
-// branch: catalog-fixes-1 commit: 6107b87917ef534d374155a9909ec53fb025a11c Thu, 16 May 2024 15:22:01 GMT
-import{html as a,LitElement as A}from"/libs/deps/lit-all.min.js";import{unsafeHTML as b}from"/libs/deps/lit-all.min.js";var d=class{constructor(e,t){this.key=Symbol("match-media-key"),this.matches=!1,this.host=e,this.host.addController(this),this.media=window.matchMedia(t),this.matches=this.media.matches,this.onChange=this.onChange.bind(this),e.addController(this)}hostConnected(){var e;(e=this.media)==null||e.addEventListener("change",this.onChange)}hostDisconnected(){var e;(e=this.media)==null||e.removeEventListener("change",this.onChange)}onChange(e){this.matches!==e.matches&&(this.matches=e.matches,this.host.requestUpdate(this.key,!this.matches))}};var f="hashchange";function w(r=window.location.hash){let e=[],t=r.replace(/^#/,"").split("&");for(let o of t){let[n,i=""]=o.split("=");n&&e.push([n,decodeURIComponent(i.replace(/\+/g," "))])}return Object.fromEntries(e)}function p(r){let e=new URLSearchParams(window.location.hash.slice(1));Object.entries(r).forEach(([n,i])=>{i?e.set(n,i):e.delete(n)}),e.sort();let t=e.toString(),o=window.scrollY||document.documentElement.scrollTop;window.location.hash=t,window.scrollTo(0,o)}function E(r){let e=()=>{let t=w(window.location.hash);r(t)};return e(),window.addEventListener(f,e),()=>{window.removeEventListener(f,e)}}var g=(r,e={})=>{r.querySelectorAll("span[data-placeholder]").forEach(t=>{let{placeholder:o}=t.dataset;t.innerText=e[o]??""})};var x="(max-width: 1199px)",T="(min-width: 768px)",y="(min-width: 1200px)";import{css as _,unsafeCSS as C}from"/libs/deps/lit-all.min.js";var S=_`
+// branch: catalog-fixes-1 commit: fdc1e9694b9a2636ae7f83986d7dd4830f52b93f Thu, 16 May 2024 16:21:49 GMT
+import{html as a,LitElement as A}from"/libs/deps/lit-all.min.js";import{unsafeHTML as b}from"/libs/deps/lit-all.min.js";var d=class{constructor(t,e){this.key=Symbol("match-media-key"),this.matches=!1,this.host=t,this.host.addController(this),this.media=window.matchMedia(e),this.matches=this.media.matches,this.onChange=this.onChange.bind(this),t.addController(this)}hostConnected(){var t;(t=this.media)==null||t.addEventListener("change",this.onChange)}hostDisconnected(){var t;(t=this.media)==null||t.removeEventListener("change",this.onChange)}onChange(t){this.matches!==t.matches&&(this.matches=t.matches,this.host.requestUpdate(this.key,!this.matches))}};var f="hashchange";function w(r=window.location.hash){let t=[],e=r.replace(/^#/,"").split("&");for(let o of e){let[n,i=""]=o.split("=");n&&t.push([n,decodeURIComponent(i.replace(/\+/g," "))])}return Object.fromEntries(t)}function p(r){let t=new URLSearchParams(window.location.hash.slice(1));Object.entries(r).forEach(([n,i])=>{i?t.set(n,i):t.delete(n)}),t.sort();let e=t.toString(),o=window.scrollY||document.documentElement.scrollTop;window.location.hash=e,window.scrollTo(0,o)}function E(r){let t=()=>{let e=w(window.location.hash);r(e)};return t(),window.addEventListener(f,t),()=>{window.removeEventListener(f,t)}}var g=(r,t={})=>{r.querySelectorAll("span[data-placeholder]").forEach(e=>{let{placeholder:o}=e.dataset;e.innerText=t[o]??""})};var x="(max-width: 1199px)",T="(min-width: 768px)",y="(min-width: 1200px)";import{css as _,unsafeCSS as C}from"/libs/deps/lit-all.min.js";var S=_`
     #header,
     #resultText,
     #footer {
@@ -13,7 +13,6 @@ import{html as a,LitElement as A}from"/libs/deps/lit-all.min.js";import{unsafeHT
     }
 
     #header {
-        --mod-button-border-radius: 5px;
         order: -2;
         display: grid;
         justify-items: top;
@@ -46,11 +45,11 @@ import{html as a,LitElement as A}from"/libs/deps/lit-all.min.js";import{unsafeHT
         justify-self: end;
     }
 
-    sp-button {
+    sp-action-button {
         align-self: baseline;
     }
 
-    sp-menu sp-button {
+    sp-menu sp-action-button {
         min-width: 140px;
     }
 
@@ -94,9 +93,9 @@ import{html as a,LitElement as A}from"/libs/deps/lit-all.min.js";import{unsafeHT
             justify-content: end;
         }
     }
-`;var u=(r,e)=>r.querySelector(`[slot="${e}"]`).textContent.trim();var N="merch-card-collection",l={alphabetical:"alphabetical",authored:"authored"},R={filters:["noResultText","resultText","resultsText"],mobile:["noSearchResultsMobileText","searchResultMobileText","searchResultsMobileText"],desktop:["noSearchResultsText","searchResultText","searchResultsText"]},v=(r,{filter:e})=>r.filter(t=>t.filters.hasOwnProperty(e)),M=(r,{types:e})=>e?(e=e.split(","),r.filter(t=>e.some(o=>t.types.includes(o)))):r,L=r=>r.sort((e,t)=>(e.title??"").localeCompare(t.title??"","en",{sensitivity:"base"})),$=(r,{filter:e})=>r.sort((t,o)=>o.filters[e]?.order==null||isNaN(o.filters[e]?.order)?-1:t.filters[e]?.order==null||isNaN(t.filters[e]?.order)?1:t.filters[e].order-o.filters[e].order),k=(r,{search:e})=>e?.length?(e=e.toLowerCase(),r.filter(t=>(t.title??"").toLowerCase().includes(e))):r,m=class extends A{static properties={filter:{type:String,attribute:"filter",reflect:!0},filtered:{type:String,attribute:"filtered"},search:{type:String,attribute:"search",reflect:!0},sort:{type:String,attribute:"sort",default:l.authored,reflect:!0},types:{type:String,attribute:"types",reflect:!0},limit:{type:Number,attribute:"limit"},page:{type:Number,attribute:"page",reflect:!0},singleApp:{type:String,attribute:"single-app",reflect:!0},hasMore:{type:Boolean},displayResult:{type:Boolean,attribute:"display-result"},resultCount:{type:Number},sidenav:{type:Object}};#t;#e;mobileAndTablet=new d(this,x);constructor(){super(),this.filter="all",this.hasMore=!1,this.resultCount=void 0,this.#e=0,this.displayResult=!1}render(){return a`${this.header}
+`;var u=(r,t)=>r.querySelector(`[slot="${t}"]`).textContent.trim();var N="merch-card-collection",l={alphabetical:"alphabetical",authored:"authored"},R={filters:["noResultText","resultText","resultsText"],mobile:["noSearchResultsMobileText","searchResultMobileText","searchResultsMobileText"],desktop:["noSearchResultsText","searchResultText","searchResultsText"]},v=(r,{filter:t})=>r.filter(e=>e.filters.hasOwnProperty(t)),M=(r,{types:t})=>t?(t=t.split(","),r.filter(e=>t.some(o=>e.types.includes(o)))):r,L=r=>r.sort((t,e)=>(t.title??"").localeCompare(e.title??"","en",{sensitivity:"base"})),$=(r,{filter:t})=>r.sort((e,o)=>o.filters[t]?.order==null||isNaN(o.filters[t]?.order)?-1:e.filters[t]?.order==null||isNaN(e.filters[t]?.order)?1:e.filters[t].order-o.filters[t].order),k=(r,{search:t})=>t?.length?(t=t.toLowerCase(),r.filter(e=>(e.title??"").toLowerCase().includes(t))):r,m=class extends A{static properties={filter:{type:String,attribute:"filter",reflect:!0},filtered:{type:String,attribute:"filtered"},search:{type:String,attribute:"search",reflect:!0},sort:{type:String,attribute:"sort",default:l.authored,reflect:!0},types:{type:String,attribute:"types",reflect:!0},limit:{type:Number,attribute:"limit"},page:{type:Number,attribute:"page",reflect:!0},singleApp:{type:String,attribute:"single-app",reflect:!0},hasMore:{type:Boolean},displayResult:{type:Boolean,attribute:"display-result"},resultCount:{type:Number},sidenav:{type:Object}};#e;#t;mobileAndTablet=new d(this,x);constructor(){super(),this.filter="all",this.hasMore=!1,this.resultCount=void 0,this.#t=0,this.displayResult=!1}render(){return a`${this.header}
             <slot></slot>
-            ${this.footer}`}updated(e){if(!this.querySelector("merch-card"))return;let t=[...this.children].filter(s=>s.tagName==="MERCH-CARD");if(t.length===0)return;e.has("singleApp")&&this.singleApp&&t.forEach(s=>{s.updateFilters(s.name===this.singleApp)});let o=this.sort===l.alphabetical?L:$,i=[v,M,k,o].reduce((s,h)=>h(s,this),t).map((s,h)=>[s,h]);if(this.resultCount=i.length,this.page&&this.limit){let s=this.page*this.limit;this.hasMore=i.length>s,i=i.filter(([,h])=>h<s)}let c=new Map(i);this.#e=(this.limit*(this.page-1)+1).toString(),t.forEach(s=>{c.has(s)?(s.style.order=c.get(s),s.style.order===this.#e&&(this.#t=s),s.size=s.filters[this.filter]?.size,s.style.removeProperty("display"),s.requestUpdate()):(s.style.display="none",s.size=void 0,s.style.removeProperty("order"))}),this.updateComplete.then(()=>{let s=this.shadowRoot.getElementById("resultText")?.firstElementChild?.assignedElements?.()?.[0];s&&g(s,{resultCount:this.resultCount,searchTerm:this.search,filter:this.sidenav?.filters.selectedText})})}connectedCallback(){super.connectedCallback(),this.filtered?(this.filter=this.filtered,this.page=1):this.startDeeplink(),this.sidenav=document.querySelector("merch-sidenav")}disconnectedCallback(){super.disconnectedCallback(),this.stopDeeplink?.()}get header(){if(!this.filtered)return a`<div id="header">
+            ${this.footer}`}updated(t){if(!this.querySelector("merch-card"))return;let e=[...this.children].filter(s=>s.tagName==="MERCH-CARD");if(e.length===0)return;t.has("singleApp")&&this.singleApp&&e.forEach(s=>{s.updateFilters(s.name===this.singleApp)});let o=this.sort===l.alphabetical?L:$,i=[v,M,k,o].reduce((s,h)=>h(s,this),e).map((s,h)=>[s,h]);if(this.resultCount=i.length,this.page&&this.limit){let s=this.page*this.limit;this.hasMore=i.length>s,i=i.filter(([,h])=>h<s)}let c=new Map(i);this.#t=(this.limit*(this.page-1)+1).toString(),e.forEach(s=>{c.has(s)?(s.style.order=c.get(s),s.style.order===this.#t&&(this.#e=s),s.size=s.filters[this.filter]?.size,s.style.removeProperty("display"),s.requestUpdate()):(s.style.display="none",s.size=void 0,s.style.removeProperty("order"))}),this.updateComplete.then(()=>{let s=this.shadowRoot.getElementById("resultText")?.firstElementChild?.assignedElements?.()?.[0];s&&g(s,{resultCount:this.resultCount,searchTerm:this.search,filter:this.sidenav?.filters.selectedText})})}connectedCallback(){super.connectedCallback(),this.filtered?(this.filter=this.filtered,this.page=1):this.startDeeplink(),this.sidenav=document.querySelector("merch-sidenav")}disconnectedCallback(){super.disconnectedCallback(),this.stopDeeplink?.()}get header(){if(!this.filtered)return a`<div id="header">
                 <sp-theme theme="spectrum" color="light" scale="medium">
                     ${this.searchBar} ${this.filtersButton} ${this.sortButton}
                 </sp-theme>
@@ -107,41 +106,41 @@ import{html as a,LitElement as A}from"/libs/deps/lit-all.min.js";import{unsafeHT
             <sp-theme theme="spectrum" color="light" scale="medium">
                 ${this.showMoreButton}
             </sp-theme>
-        </div>`}get resultTextSlotName(){return R[this.search?this.mobileAndTablet.matches?"mobile":"desktop":"filters"][Math.min(this.resultCount,2)]}get showMoreButton(){if(this.hasMore)return a`<sp-button
+        </div>`}get resultTextSlotName(){return R[this.search?this.mobileAndTablet.matches?"mobile":"desktop":"filters"][Math.min(this.resultCount,2)]}get showMoreButton(){if(this.hasMore)return a`<sp-action-button
             variant="secondary"
             treatment="outline"
             style="order: 1000;"
             @click="${this.showMore}"
         >
             <slot name="showMoreText"></slot>
-        </sp-button>`}get filtersButton(){return this.mobileAndTablet.matches?a`<sp-button
+        </sp-action-button>`}get filtersButton(){return this.mobileAndTablet.matches?a`<sp-action-button
                   id="filtersButton"
                   variant="secondary"
                   treatment="outline"
                   @click="${this.openFilters}"
                   ><slot name="filtersText"></slot
-              ></sp-button>`:""}get searchBar(){let e=u(this,"searchText");return this.mobileAndTablet.matches?a`<merch-search deeplink="search">
+              ></sp-action-button>`:""}get searchBar(){let t=u(this,"searchText");return this.mobileAndTablet.matches?a`<merch-search deeplink="search">
                   <sp-search
                       id="searchBar"
-                      placeholder="${e}"
+                      placeholder="${t}"
                   ></sp-search>
-              </merch-search>`:""}get sortButton(){let e=u(this,"sortText"),t=u(this,"popularityText"),o=u(this,"alphabeticallyText");if(!(e&&t&&o))return;let n=this.sort===l.alphabetical,i=n?"":"selected",c=n?"selected":"";return a`
+              </merch-search>`:""}get sortButton(){let t=u(this,"sortText"),e=u(this,"popularityText"),o=u(this,"alphabeticallyText");if(!(t&&e&&o))return;let n=this.sort===l.alphabetical,i=n?"":"selected",c=n?"selected":"";return a`
             <sp-action-menu
                 id="sortButton"
                 size="m"
                 @change="${this.sortChanged}"
             >
                 <span slot="label-only"
-                    >${e}:
-                    ${n?o:t}</span
+                    >${t}:
+                    ${n?o:e}</span
                 >
                 ${b(`<sp-menu-item
         value="${l.authored}"
         ${i}
-        >${t}</sp-menu-item>`)} ${b(`<sp-menu-item
+        >${e}</sp-menu-item>`)} ${b(`<sp-menu-item
         value="${l.alphabetical}"
         ${c}
         >${o}</sp-menu-item
     >`)}
             </sp-action-menu>
-        `}sortChanged(e){e.target.value===l.authored?p({sort:void 0}):p({sort:e.target.value})}async showMore(){let e=this.page+1;p({page:e}),this.page=e,await this.updateComplete}startDeeplink(){this.stopDeeplink=E(({category:e,filter:t,types:o,sort:n,search:i,single_app:c,page:s})=>{t=t||e,!this.filtered&&t&&t!==this.filter&&setTimeout(()=>{p({page:void 0}),this.page=1},1),this.filtered||(this.filter=t??this.filter),this.types=o??"",this.search=i??"",this.singleApp=c,this.sort=n,this.page=Number(s)||1})}openFilters({target:e}){this.sidenav?.showModal(e)}static styles=[S]};m.SortOrder=l;customElements.define(N,m);export{m as MerchCardCollection};
+        `}sortChanged(t){t.target.value===l.authored?p({sort:void 0}):p({sort:t.target.value})}async showMore(){let t=this.page+1;p({page:t}),this.page=t,await this.updateComplete}startDeeplink(){this.stopDeeplink=E(({category:t,filter:e,types:o,sort:n,search:i,single_app:c,page:s})=>{e=e||t,!this.filtered&&e&&e!==this.filter&&setTimeout(()=>{p({page:void 0}),this.page=1},1),this.filtered||(this.filter=e??this.filter),this.types=o??"",this.search=i??"",this.singleApp=c,this.sort=n,this.page=Number(s)||1})}openFilters({target:t}){this.sidenav?.showModal(t)}static styles=[S]};m.SortOrder=l;customElements.define(N,m);export{m as MerchCardCollection};
