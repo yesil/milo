@@ -7,7 +7,7 @@ const BANNER = `/* eslint-disable */
 `;
 
 const ICONS = [
-  'asterisk', 'chevron', 'checkmark', 'dash', 'cross',
+  'asterisk', 'chevron', 'checkmark', 'dash', 'cross', 'corner-triangle',
 ];
 
 /**
