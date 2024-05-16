@@ -1,3 +1,5 @@
+// Source: https://github.com/tc39/proposal-relative-indexing-method?tab=readme-ov-file#polyfill
+
 function at(n) {
 	// ToInteger() abstract op
 	n = Math.trunc(n) || 0;
