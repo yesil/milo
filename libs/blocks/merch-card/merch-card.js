@@ -125,17 +125,6 @@ const parseContent = async (el, merchCard) => {
     if (mnemonicList) bodySlot.append(mnemonicList);
   });
 
-  const mnemonicLink = merchCard.querySelector('a[href*="#mnemonic-link"]');
-  if (mnemonicLink) {
-    const link = mnemonicLink.getAttribute('href').replace('#mnemonic-link', '');
-    mnemonicLink.setAttribute('href', link);
-    const a = createTag('a', { href: link, slot: merchCard.titleElement.getAttribute('slot') });
-    const { titleElement } = merchCard;
-    titleElement.replaceWith(a);
-    titleElement.removeAttribute('slot');
-    a.appendChild(titleElement);
-  }
-
   if (merchCard.variant === MINI_COMPARE_CHART && merchCard.childNodes[1]) {
     merchCard.insertBefore(bodySlot, merchCard.childNodes[1]);
   }
@@ -401,12 +390,12 @@ const init = async (el) => {
       const img = {
         src: icon.querySelector('img').src,
         alt: icon.querySelector('img').alt,
+        href: icon.closest('a')?.href ?? '',
       };
       return img;
     });
     iconImgs.forEach((icon) => {
-      const href = merchCard.titleElement.getAttribute('href') ?? '';
-      const merchIcon = createTag('merch-icon', { slot: 'icons', src: icon.src, alt: icon.alt, href });
+      const merchIcon = createTag('merch-icon', { slot: 'icons', src: icon.src, alt: icon.alt, href: icon.href });
       merchCard.appendChild(merchIcon);
     });
     icons.forEach((icon) => icon.remove());

@@ -1,6 +1,6 @@
 import { readFile } from '@web/test-runner-commands';
 import { expect } from '@esm-bundle/chai';
-import { setConfig } from '../../../libs/utils/utils.js';
+import { decorateLinks, setConfig } from '../../../libs/utils/utils.js';
 
 const { default: init } = await import('../../../libs/blocks/merch-card/merch-card.js');
 const delay = (duration = 100) => new Promise((resolve) => { setTimeout(resolve, duration); });
@@ -140,10 +140,15 @@ describe('Plans Card', () => {
 });
 
 describe('Catalog Card', () => {
-  it('Decorates with mnemonic link', async () => {
+  it.only('Decorates with mnemonic link', async () => {
     document.body.innerHTML = await readFile({ path: './mocks/catalog.html' });
-    const merchCard = await init(document.getElementById('mnemonic-link'));
-    expect(merchCard.titleElement.outerHTML).to.equal('<a href="https://www.adobe.com/creativecloud/all-apps.html" slot="heading-xs" daa-ll="Creative Cloud All Apps-1--Creative Cloud All Apps"><h3>Creative Cloud All Apps</h3></a>');
+    const el = document.getElementById('mnemonic-link');
+    await decorateLinks(document.body);
+    const merchCard = await init(el);
+    const [icon1, icon2] = merchCard.querySelectorAll('merch-icon');
+    expect(icon1.outerHTML).to.equal('<merch-icon slot="icons" src="http://localhost:2000/test/blocks/merch-card/mocks/photoshop.svg" alt="Photoshop" href="https://www.adobe.com/photoshop.html?source=icon1"></merch-icon>');
+    expect(icon2.outerHTML).to.equal('<merch-icon slot="icons" src="http://localhost:2000/test/blocks/merch-card/mocks/photoshop.svg" alt="Photoshop" href="https://www.adobe.com/photoshop.html?source=icon2"></merch-icon>');
+    expect(merchCard.titleElement.outerHTML).to.equal('<h3 slot="heading-xs"><a href="https://www.adobe.com/photoshop.html" daa-ll="Photoshop-1--Photoshop">Photoshop</a></h3>');
   });
 
   it('Supports Catalog card', async () => {
