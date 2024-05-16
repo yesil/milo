@@ -89,6 +89,7 @@ build({
 
 mods.forEach((mod) => {
   if (mod === 'lit.js') return;
+  if (mod === 'polyfills') return;
   build({
     define: DEFINE,
     bundle: true,
