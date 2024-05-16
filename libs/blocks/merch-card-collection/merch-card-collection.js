@@ -223,7 +223,7 @@ export default async function init(el) {
       import(`${base}/features/spectrum-web-components/dist/search.js`),
       import(`${base}/features/spectrum-web-components/dist/overlay.js`),
       import(`${base}/features/spectrum-web-components/dist/menu.js`),
-      import(`${base}/features/spectrum-web-components/dist/popover.js`),
+      import(`${base}/features/spectrum-web-components/dist/action-menu.js`),
     ] : [];
 
   const preferences = {};
