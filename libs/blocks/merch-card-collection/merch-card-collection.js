@@ -219,6 +219,7 @@ export default async function init(el) {
     ? [
       ...deps,
       import(`${base}/features/spectrum-web-components/dist/theme.js`),
+      import(`${base}/features/spectrum-web-components/dist/button.js`),
       import(`${base}/features/spectrum-web-components/dist/action-button.js`),
       import(`${base}/features/spectrum-web-components/dist/action-menu.js`),
       import(`${base}/features/spectrum-web-components/dist/search.js`),
