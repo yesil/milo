@@ -143,12 +143,16 @@ export function getTextNodes(element) {
  * Helper function to create an element with attributes
  * @param {string} tag
  * @param {Object} attributes
- * @param {*} innerHTML
+ * @param {*} content
  * @returns {HTMLElement}
  */
-export function createTag(tag, attributes = {}, innerHTML) {
+export function createTag(tag, attributes = {}, content) {
   const element = document.createElement(tag);
-  element.innerHTML = innerHTML;
+  if (content instanceof HTMLElement) {
+      element.appendChild(content);
+  } else {
+    element.innerHTML = content;
+  }
 
   // Set attributes
   for (const [key, value] of Object.entries(attributes)) {
