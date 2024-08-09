@@ -1,4 +1,4 @@
-import { AEM } from '@adobe/mas-commons';
+import { AEM } from './aem.js';
 import { createTag } from './utils.js';
 
 const ATTR_AEM_BUCKET = 'aem-bucket';

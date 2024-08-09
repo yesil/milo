@@ -9,7 +9,6 @@ const { metafile } = await build({
     entryPoints: ['./src/mas.js'],
     format: 'esm',
     metafile: true,
-    minify: true,
     sourcemap: true,
     outfile: '../../../../libs/deps/mas/mas.js',
     platform: 'browser',

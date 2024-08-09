@@ -1,6 +1,7 @@
 import { init } from '@adobe/mas-commerce';
 
-const { origin, searchParams } = new URL(import.meta.url);
+const { origin, pathname, searchParams } = new URL(import.meta.url);
+const basePath = pathname.substring(0, pathname.lastIndexOf('/'));
 
 const locale = searchParams.get('locale') ?? 'US_en';
 const lang = searchParams.get('lang') ?? 'en';
@@ -19,7 +20,13 @@ const config = () => ({
 let promise = init(config);
 
 if (features?.includes('merch-card')) {
-    promise = promise.then(() => import(`${origin}/libs/deps/merch-card-all.js`));
+    promise = promise.then(() =>
+        Promise.all([
+          import(`${origin}${basePath}/merch-card.js`),
+          import(`${origin}${basePath}/merch-icon.js`),
+          import(`${origin}${basePath}/merch-datasource.js`),
+        ]),
+    );
 }
 
 export default promise;
