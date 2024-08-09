@@ -16,8 +16,10 @@ const config = () => ({
     locale: { prefix: locale },
 });
 
-init(config);
+let promise = init(config);
 
-if (features.includes('merch-card')) {
-    import(`${origin}/libs/deps/merch-card-all.js`);
+if (features?.includes('merch-card')) {
+    promise = promise.then(() => import(`${origin}/libs/deps/merch-card-all.js`));
 }
+
+export default promise;
