@@ -97,10 +97,8 @@ mods.forEach((mod) => {
     entryPoints: [`./src/${mod}`],
     platform: 'browser',
     format: 'esm',
-    sourcemap: false,
     legalComments: 'none',
     target: TARGET,
-    minify: true,
     plugins: [rewriteImports()],
     outfile: `./dist/${mod}`,
   });
