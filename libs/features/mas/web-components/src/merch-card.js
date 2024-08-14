@@ -639,6 +639,7 @@ export class MerchCard extends LitElement {
             ) {
                 e.preventDefault();
                 e.stopImmediatePropagation();
+                console.log('last focusable element');
             } else if (
                 e.shiftKey &&
                 document.activeElement === firstFocusableElement
