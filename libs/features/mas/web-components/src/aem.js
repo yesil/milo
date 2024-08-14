@@ -31,20 +31,7 @@ export async function searchFragment({ path, query }) {
         headers,
     })
         .then((res) => res.json())
-        .then(({ items }) => {
-            return items.map((item) => {
-                const data = item.fields.reduce(
-                    (acc, { name, multiple, values }) => {
-                        acc[name] = multiple ? values : values[0];
-                        return acc;
-                    },
-                    {},
-                );
-                data.path = item.path;
-                data.model = item.model;
-                return data;
-            });
-        });
+        .then((json) => json.items);
 }
 
 /**
@@ -64,16 +51,15 @@ export async function getFragmentByPath(path) {
  * @param {Object} fragment
  */
 export async function saveFragment(fragment) {
+    const { title, fields } = fragment;
     return await fetch(`${this.cfFragmentsUrl}/${fragment.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'If-Match': 'string',
+            'If-Match': '*',
             ...headers,
         },
-        body: JSON.stringify({
-            fields: [],
-        }),
+        body: JSON.stringify({ title, fields }),
     });
 }
 

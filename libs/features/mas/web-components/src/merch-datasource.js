@@ -54,7 +54,17 @@ const cardContent = {
     },
 };
 
-async function parseMerchCard(item, appendFn, merchCard) {
+async function parseMerchCard(fragementData, appendFn, merchCard) {
+    const item = fragementData.fields.reduce(
+        (acc, { name, multiple, values }) => {
+            acc[name] = multiple ? values : values[0];
+            return acc;
+        },
+        { id: fragementData.id },
+    );
+    item.path = item.path;
+    item.model = item.model;
+
     const { variant = 'ccd-action' } = item;
     merchCard.setAttribute('variant', variant);
     const cardMapping = cardContent[variant];
