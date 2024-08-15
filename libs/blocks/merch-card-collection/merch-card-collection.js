@@ -301,10 +301,11 @@ export default async function init(el) {
   }
 
   await merchCardCollectionDep;
-  await baseDep;
-  await overlayDep;
   performance.mark('merch-card-collection-render:start');
   const merchCardCollection = createTag('merch-card-collection', attributes);
+  await baseDep;
+  await overlayDep;
+  await customElements.whenDefined('sp-overlay');
   el.replaceWith(merchCardCollection);
   if (literalSlots.length > 0) {
     merchCardCollection.append(...literalSlots);
