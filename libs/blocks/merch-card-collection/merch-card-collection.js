@@ -219,12 +219,14 @@ export default async function init(el) {
     el.closest('main > .section').classList.add('four-merch-cards', type);
   }
 
+  const baseDep = import(`${base}/features/spectrum-web-components/dist/base.js`);
   const overlayDep = import(`${base}/features/spectrum-web-components/dist/overlay.js`);
   deps = !filtered
     ? [
       ...deps,
-      import(`${base}/features/spectrum-web-components/dist/theme.js`),
+      baseDep,
       overlayDep,
+      import(`${base}/features/spectrum-web-components/dist/theme.js`),
       import(`${base}/features/spectrum-web-components/dist/tray.js`),
       import(`${base}/features/spectrum-web-components/dist/action-button.js`),
       import(`${base}/features/spectrum-web-components/dist/search.js`),
@@ -299,6 +301,7 @@ export default async function init(el) {
   }
 
   await merchCardCollectionDep;
+  await baseDep;
   await overlayDep;
   performance.mark('merch-card-collection-render:start');
   const merchCardCollection = createTag('merch-card-collection', attributes);
