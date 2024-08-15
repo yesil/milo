@@ -2347,14 +2347,14 @@ var init_overlay_css = __esm({
 var Overlay_exports = {};
 __export(Overlay_exports, {
   LONGPRESS_INSTRUCTIONS: () => LONGPRESS_INSTRUCTIONS,
-  Overlay: () => Overlay
+  Overlay: () => Overlay2
 });
 import { html as d4 } from "/libs/features/spectrum-web-components/dist/base.js";
 import { property as n, query as g3, queryAssignedElements as C3, state as P } from "/libs/features/spectrum-web-components/dist/base.js";
 import { ElementResolutionController as w, elementResolverUpdatedSymbol as T3 } from "/libs/features/spectrum-web-components/dist/reactive-controllers.js";
 import { ifDefined as c3, styleMap as f3 } from "/libs/features/spectrum-web-components/dist/base.js";
 import { randomID as S } from "/libs/features/spectrum-web-components/dist/shared.js";
-var b3, E2, r, B, p4, i, Overlay;
+var b3, E2, r, B, p4, i, Overlay2;
 var init_Overlay = __esm({
   "node_modules/@spectrum-web-components/overlay/src/Overlay.js"() {
     "use strict";
@@ -2607,7 +2607,7 @@ var init_Overlay = __esm({
       }
     };
     i.styles = [overlay_css_default], i.openCount = 1, r([n({ type: Boolean })], i.prototype, "delayed", 1), r([g3(".dialog")], i.prototype, "dialogEl", 2), r([n({ type: Boolean })], i.prototype, "disabled", 1), r([C3({ flatten: true, selector: ':not([slot="longpress-describedby-descriptor"], slot)' })], i.prototype, "elements", 2), r([n({ type: Number })], i.prototype, "offset", 2), r([n({ type: Boolean, reflect: true })], i.prototype, "open", 1), r([n()], i.prototype, "placement", 2), r([n({ attribute: "receives-focus" })], i.prototype, "receivesFocus", 2), r([g3("slot")], i.prototype, "slotEl", 2), r([P()], i.prototype, "state", 1), r([n({ type: Number, attribute: "tip-padding" })], i.prototype, "tipPadding", 2), r([n()], i.prototype, "trigger", 2), r([n({ attribute: false })], i.prototype, "triggerElement", 2), r([n({ attribute: false })], i.prototype, "triggerInteraction", 2), r([n()], i.prototype, "type", 2);
-    Overlay = i;
+    Overlay2 = i;
   }
 });
 
@@ -2618,7 +2618,7 @@ var init_sp_overlay = __esm({
   "node_modules/@spectrum-web-components/overlay/sp-overlay.js"() {
     "use strict";
     init_Overlay();
-    e("sp-overlay", Overlay);
+    e("sp-overlay", Overlay2);
   }
 });
 
@@ -2792,11 +2792,9 @@ e3("overlay-trigger", OverlayTrigger);
 init_sp_overlay();
 
 // src/overlay.js
-init_Overlay();
 init_slottable_request_event();
 window.__merch__spectrum_Overlay = Overlay;
 export {
-  Overlay,
   SlottableRequestEvent
 };
 //# sourceMappingURL=overlay.js.map
