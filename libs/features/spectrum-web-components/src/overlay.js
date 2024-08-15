@@ -7,4 +7,4 @@ import { SlottableRequestEvent } from '@spectrum-web-components/overlay/src/slot
 // eslint-disable-next-line no-underscore-dangle
 window.__merch__spectrum_Overlay = Overlay;
 
-export { SlottableRequestEvent };
+export { Overlay, SlottableRequestEvent };
