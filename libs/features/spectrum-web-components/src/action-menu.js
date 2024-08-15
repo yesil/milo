@@ -1,1 +1,1 @@
-import '@spectrum-web-components/action-menu/sp-action-menu.js';
+import '@spectrum-web-components/action-menu/sync/sp-action-menu.js';

@@ -2625,9 +2625,6 @@ var init_sp_overlay = __esm({
 // src/overlay.js
 init_sp_overlay();
 
-// node_modules/@spectrum-web-components/overlay/overlay-trigger.js
-import { defineElement as e3 } from "/libs/features/spectrum-web-components/dist/base.js";
-
 // node_modules/@spectrum-web-components/overlay/src/OverlayTrigger.js
 import { html as r2, SpectrumElement as u2 } from "/libs/features/spectrum-web-components/dist/base.js";
 import { property as s2, query as h2, state as c4 } from "/libs/features/spectrum-web-components/dist/base.js";
@@ -2788,7 +2785,11 @@ var OverlayTrigger = class extends u2 {
 n2([s2()], OverlayTrigger.prototype, "content", 2), n2([s2({ reflect: true })], OverlayTrigger.prototype, "placement", 2), n2([s2()], OverlayTrigger.prototype, "type", 2), n2([s2({ type: Number })], OverlayTrigger.prototype, "offset", 2), n2([s2({ reflect: true })], OverlayTrigger.prototype, "open", 2), n2([s2({ type: Boolean, reflect: true })], OverlayTrigger.prototype, "disabled", 2), n2([s2({ attribute: "receives-focus" })], OverlayTrigger.prototype, "receivesFocus", 2), n2([c4()], OverlayTrigger.prototype, "clickContent", 2), n2([c4()], OverlayTrigger.prototype, "longpressContent", 2), n2([c4()], OverlayTrigger.prototype, "hoverContent", 2), n2([c4()], OverlayTrigger.prototype, "targetContent", 2), n2([h2("#click-overlay", true)], OverlayTrigger.prototype, "clickOverlayElement", 2), n2([h2("#longpress-overlay", true)], OverlayTrigger.prototype, "longpressOverlayElement", 2), n2([h2("#hover-overlay", true)], OverlayTrigger.prototype, "hoverOverlayElement", 2);
 
 // node_modules/@spectrum-web-components/overlay/overlay-trigger.js
+import { defineElement as e3 } from "/libs/features/spectrum-web-components/dist/base.js";
 e3("overlay-trigger", OverlayTrigger);
+
+// node_modules/@spectrum-web-components/overlay/sync/overlay-trigger.js
+init_sp_overlay();
 
 // src/overlay.js
 init_Overlay();

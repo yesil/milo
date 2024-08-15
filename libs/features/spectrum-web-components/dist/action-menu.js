@@ -1,3 +1,6 @@
+// node_modules/@spectrum-web-components/action-menu/sync/sp-action-menu.js
+import "/libs/features/spectrum-web-components/dist/picker.js";
+
 // node_modules/@spectrum-web-components/action-menu/src/ActionMenu.js
 import { html as s } from "/libs/features/spectrum-web-components/dist/base.js";
 import { state as b } from "/libs/features/spectrum-web-components/dist/base.js";

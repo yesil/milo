@@ -508,6 +508,11 @@ var Picker = class extends PickerBase {
   }
 };
 
+// node_modules/@spectrum-web-components/picker/sync/index.js
+import "/libs/features/spectrum-web-components/dist/overlay.js";
+import "/libs/features/spectrum-web-components/dist/tray.js";
+import "/libs/features/spectrum-web-components/dist/popover.js";
+
 // node_modules/@spectrum-web-components/picker/sp-picker.js
 import { defineElement as r3 } from "/libs/features/spectrum-web-components/dist/base.js";
 r3("sp-picker", Picker);
