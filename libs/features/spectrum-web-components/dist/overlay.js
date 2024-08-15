@@ -2792,7 +2792,9 @@ e3("overlay-trigger", OverlayTrigger);
 init_sp_overlay();
 
 // src/overlay.js
+init_Overlay();
 init_slottable_request_event();
+window.__merch__spectrum_Overlay = Overlay;
 export {
   SlottableRequestEvent
 };
