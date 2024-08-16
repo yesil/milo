@@ -46,6 +46,23 @@ export async function getFragmentByPath(path) {
         .then(({ items: [item] }) => item);
 }
 
+const getFragment = async (res) => {
+  const eTag = res.headers.get('Etag');
+    const fragment = await res.json();
+    fragment.etag = eTag;
+    return fragment;
+};
+
+/**
+ * @param {string} id fragment id
+ * @returns the raw fragment item
+ */
+export async function getFragmentById(id) {
+    return await fetch(`${this.cfFragmentsUrl}/${id}`, {
+        headers,
+    }).then(getFragment);
+}
+
 /**
  * Save given fragment
  * @param {Object} fragment
@@ -56,11 +73,11 @@ export async function saveFragment(fragment) {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'If-Match': '*',
+            'If-Match': fragment.etag,
             ...headers,
         },
         body: JSON.stringify({ title, fields }),
-    });
+    }).then(getFragment);
 }
 
 class AEM {
@@ -69,6 +86,7 @@ class AEM {
             fragments: {
                 search: searchFragment.bind(this),
                 getCfByPath: getFragmentByPath.bind(this),
+                getCfById: getFragmentById.bind(this),
                 save: saveFragment.bind(this),
             },
         },

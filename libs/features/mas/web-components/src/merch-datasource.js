@@ -54,13 +54,13 @@ const cardContent = {
     },
 };
 
-async function parseMerchCard(fragementData, appendFn, merchCard) {
-    const item = fragementData.fields.reduce(
+async function parseMerchCard(fragmentData, appendFn, merchCard) {
+    const item = fragmentData.fields.reduce(
         (acc, { name, multiple, values }) => {
             acc[name] = multiple ? values : values[0];
             return acc;
         },
-        { id: fragementData.id },
+        { id: fragmentData.id },
     );
     item.path = item.path;
     item.model = item.model;
@@ -125,9 +125,11 @@ async function parseMerchCard(fragementData, appendFn, merchCard) {
 
 class FragmentCache {
     #fragmentCache = new Map();
+
     clear() {
         this.#fragmentCache.clear();
     }
+
     add(...items) {
         items.forEach((item) => {
             const { path } = item;
@@ -136,12 +138,15 @@ class FragmentCache {
             }
         });
     }
+
     has(path) {
         return this.#fragmentCache.has(path);
     }
+
     get(path) {
         return this.#fragmentCache.get(path);
     }
+
     remove(path) {
         this.#fragmentCache.delete(path);
     }
