@@ -3,7 +3,7 @@
  */
 
 import { decorateButtons, getBlockSize, decorateBlockBg } from '../../utils/decorate.js';
-import { createTag, getConfig, loadStyle } from '../../utils/utils.js';
+import { createTag, getConfig, loadStyle, loadBlock } from '../../utils/utils.js';
 
 // [headingSize, bodySize, detailSize]
 const blockTypeSizes = {
@@ -80,6 +80,12 @@ export async function loadMnemonicList(foreground) {
   }
 }
 
+export async function loadCountDownTimer(el) {
+  const countDownTimer = el.querySelector('.countdown-timer');
+  countDownTimer.style.display = 'none'; // Hide the countdown timer until it's loaded
+  await loadBlock(countDownTimer);
+}
+
 function decorateSplit(el, foreground, media) {
   if (foreground && media) {
     media.classList.add('bleed');
@@ -135,5 +141,9 @@ export default async function init(el) {
   if (el.classList.contains('split')) decorateSplit(el, foreground, media);
   if (el.classList.contains('mnemonic-list') && foreground) {
     await loadMnemonicList(foreground);
+  }
+
+  if (el.classList.contains('countdown-timer')) {
+    await loadCountDownTimer(el);
   }
 }
