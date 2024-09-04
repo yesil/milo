@@ -90,6 +90,12 @@ const MILO_BLOCKS = [
   'share',
   'reading-time',
 ];
+
+const NESTABLE_BLOCKS_SELECTOR = [
+  'mnemonic-list',
+  'countdown-timer',
+].map((block) => `:scope div.${block}`).join(', ');
+
 const AUTO_BLOCKS = [
   { adobetv: 'tv.adobe.com' },
   { gist: 'https://gist.github.com' },
@@ -807,7 +813,7 @@ export function filterDuplicatedLinkBlocks(blocks) {
 function decorateSection(section, idx) {
   let links = decorateLinks(section);
   decorateDefaults(section);
-  const blocks = section.querySelectorAll(':scope > div[class]:not(.content)');
+  const blocks = section.querySelectorAll(`:scope > div[class]:not(.content), ${NESTABLE_BLOCKS_SELECTOR}`);
 
   const { doNotInline } = getConfig();
   const blockLinks = [...blocks].reduce((blkLinks, block) => {
