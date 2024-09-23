@@ -136,7 +136,7 @@ Two photoshop and three acrobat pro single apps (TEAMS):
 <a id="co2" href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M">Buy now (click me)</a>
 <script type="module">
   const logTarget = document.getElementById('logTarget');
-  const log = (message) => logTarget.innerHTML = `${logTarget.innerHTML}<br>${message}`;
+  const log = (...messages) => logTarget.innerHTML = `${logTarget.innerHTML}<br>${messages.join(' ')}`;
   const a = document.getElementById('co2');
   a.addEventListener('wcms:placeholder:pending', () => log('placeholder pending'));
   a.addEventListener('wcms:placeholder:resolved', () => log('placeholder resolved'));
@@ -144,7 +144,7 @@ Two photoshop and three acrobat pro single apps (TEAMS):
   a.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    log('checkout link is clicked');
+    log('checkout link is clicked: ', e.target.href);
   });
   a.addEvent
 </script>
