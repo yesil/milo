@@ -61,9 +61,11 @@ const htmlTemplate = `
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<main>
 <sp-theme color="light" scale="medium">
 ${htmlContent}
 </sp-theme>
+</main>
 </body>
 </html>
 `;

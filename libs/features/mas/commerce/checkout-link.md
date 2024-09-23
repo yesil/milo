@@ -1,5 +1,5 @@
 # checkout-link
-This customized built-in element renders a checkout link supporting most of the features documented at https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=businessservices&title=UCv3+Link+Creation+Guide
+This customized built-in element renders a checkout link supporting most of the features documented at https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=businessservices&title=UCv3+Link+Creation+Guide.
 
 Behind the scene, it uses https://git.corp.adobe.com/PandoraUI/commerce-core to generate the checkout url.
 
@@ -28,7 +28,7 @@ This is a functional **buy now** button: <a href="#" is="checkout-link" data-wcs
 |------------------------------|-------------------------------------------------------------------------------------------------|---------------|----------|
 | `data-wcs-osi`               | Offer Selector ID, can be multiple, seperated by comma           |               |   `true`       |
 | `data-checkout-workflow`     | Target checkout workflow to for the generation of checkout urls     | UCv3              |         `false` |
-| `data-checkout-workflow-step`| [workflow step](https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=businessservices&title=UCv3+Link+Creation+Guide#UCv3LinkCreationGuide-RegularWorkflow)|     email          |     `false`     |
+| `data-checkout-workflow-step`| [workflow step](https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=businessservices&title=UCv3+Link+Creation+Guide#UCv3LinkCreationGuide-RegularWorkflow) to land on on the unified checkout page|     email          |     `false`     |
 | `data-extra-options`         | additional query params to append to the url, see: [Table of public query params](https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=businessservices&title=UCv3+Link+Creation+Guide#UCv3LinkCreationGuide-Tableofpublicqueryparams)|        {}       |   `false`       |
 | `data-ims-country`           | the ims country to code of the user if signed in, overrides the locale country in the generated checkout url           |              |   `false`       |
 | `data-perpetual`             | whether this is a perpetual offer `true\|false`             |               |          |
@@ -83,3 +83,87 @@ Two photoshop and three acrobat pro single apps (TEAMS):
 <a href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M" data-ims-country="JP">Buy now</a>
 
 
+## Properties
+
+| Property      | Description                       |
+|---------------|-----------------------------------|
+| `onceSettled` | promise that resolves when the custom-element either resolves or fails to resolve the offer       |
+| `options`     | JSON object with the complete set of properties used to resolve the offer          |
+| `value`       | The actual offer that is used to render the checkout link. In some cases WCS can return multiple offers but only one will be picked to render for a single app.            |
+
+### Example <br>
+
+```html
+<a id="co1" href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M" data-ims-country="CA">Buy now</a>
+<script type="module">
+  document.getElementById('co1').onceSettled().then(el => {
+    console.log("Options used to resolve the offer: ", el.options);
+    console.log("Actual raw offer used to generate the checkout link: ", el.value);
+  });
+</script>
+````
+<a id="co1" href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M" data-ims-country="CA">Buy now</a>
+<script type="module">
+  document.getElementById('co1').onceSettled().then(el => {
+    console.log("Options used to resolve the offer: ", el.options);
+    console.log("Actual raw offer used to generate the checkout link: ", el.value);
+  });
+</script>
+
+
+## Methods
+
+| Property      | Description                       |
+|---------------|-----------------------------------|
+| `requestUpdate(true\|false)` |  causes a re-render using the actual options      |
+
+
+## Events
+
+| Event     | Description                       |
+|-----------|-----------------------------------|
+| `wcms:placeholder:pending` | fires when checkout link starts loading    |
+| `wcms:placeholder:resolved`| fires when the offer is successfully  resolved  |
+| `wcms:placeholder:failed`  | fires when the offer is could not be found or fetched     |
+| `click`   | native click event on the `a`  element      |
+
+### Example <br>
+
+```html
+<a id="co2" href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M">Buy now</a>
+<script type="module">
+  const logTarget = document.getElementById('logTarget');
+  const log = (message) => logTarget.innerHTML = `${logTarget.innerHTML}<br>${message}`;
+  const a = document.getElementById('co2');
+  a.addEventListener('wcms:placeholder:pending', () => log('placeholder pending'));
+  a.addEventListener('wcms:placeholder:resolved', () => log('placeholder resolved'));
+  a.addEventListener('wcms:placeholder:failed', () => log('placeholder failed'));
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    log('checkout link is clicked');
+  });
+  a.addEvent
+</script>
+```
+
+<a id="co2" href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M">Buy now</a>
+<script type="module">
+  const logTarget = document.getElementById('logTarget');
+  const log = (...messages) => logTarget.innerHTML = `${logTarget.innerHTML}<br>${messages.join(' ')}`;
+  const a = document.getElementById('co2');
+  a.addEventListener('wcms:placeholder:pending', () => log('placeholder pending'));
+  a.addEventListener('wcms:placeholder:resolved', () => log('placeholder resolved'));
+  a.addEventListener('wcms:placeholder:failed', () => log('placeholder failed'));
+  a.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    log('checkout link is clicked: ', e.target.href);
+  });
+  a.addEvent
+</script>
+
+
+### Logs <br>
+```html {#logTarget}
+```
