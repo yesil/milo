@@ -214,7 +214,7 @@
 </tbody>
 </table>
 <h3>Example <br></h3>
-<pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;co2&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">is</span>=<span class="hljs-string">&quot;checkout-link&quot;</span> <span class="hljs-attr">data-wcs-osi</span>=<span class="hljs-string">&quot;A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M&quot;</span>&gt;</span>Buy now<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+<pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;co2&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">is</span>=<span class="hljs-string">&quot;checkout-link&quot;</span> <span class="hljs-attr">data-wcs-osi</span>=<span class="hljs-string">&quot;A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M&quot;</span>&gt;</span>Buy now (click me)<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span>&gt;</span><span class="language-javascript">
   <span class="hljs-keyword">const</span> logTarget = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;logTarget&#x27;</span>);
   <span class="hljs-keyword">const</span> <span class="hljs-title function_">log</span> = (<span class="hljs-params">message</span>) =&gt; logTarget.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">`<span class="hljs-subst">${logTarget.innerHTML}</span>&lt;br&gt;<span class="hljs-subst">${message}</span>`</span>;
@@ -230,7 +230,7 @@
   a.<span class="hljs-property">addEvent</span>
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre>
-<p><a id="co2" href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M">Buy now</a></p>
+<p><a id="co2" href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M">Buy now (click me)</a></p>
 <script type="module">
   const logTarget = document.getElementById('logTarget');
   const log = (...messages) => logTarget.innerHTML = `${logTarget.innerHTML}<br>${messages.join(' ')}`;

@@ -133,7 +133,7 @@ Two photoshop and three acrobat pro single apps (TEAMS):
 ### Example <br>
 
 ```html
-<a id="co2" href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M">Buy now</a>
+<a id="co2" href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M">Buy now (click me)</a>
 <script type="module">
   const logTarget = document.getElementById('logTarget');
   const log = (message) => logTarget.innerHTML = `${logTarget.innerHTML}<br>${message}`;
@@ -150,7 +150,7 @@ Two photoshop and three acrobat pro single apps (TEAMS):
 </script>
 ```
 
-<a id="co2" href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M">Buy now</a>
+<a id="co2" href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M">Buy now (click me)</a>
 <script type="module">
   const logTarget = document.getElementById('logTarget');
   const log = (...messages) => logTarget.innerHTML = `${logTarget.innerHTML}<br>${messages.join(' ')}`;
