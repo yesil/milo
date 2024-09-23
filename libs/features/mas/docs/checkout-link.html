@@ -73,19 +73,19 @@
 <td><code>data-perpetual</code></td>
 <td>whether this is a perpetual offer <code>true|false</code></td>
 <td></td>
-<td></td>
+<td><code>false</code></td>
 </tr>
 <tr>
 <td><code>data-promotion-code</code></td>
 <td>Flex promotion code, if applicable</td>
 <td></td>
-<td></td>
+<td><code>false</code></td>
 </tr>
 <tr>
 <td><code>data-quantity</code></td>
 <td>Quantity of the offer to purchase</td>
-<td></td>
-<td></td>
+<td>1</td>
+<td><code>false</code></td>
 </tr>
 <tr>
 <td><code>data-entitlement</code></td>
@@ -217,7 +217,7 @@
 <pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;co2&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">is</span>=<span class="hljs-string">&quot;checkout-link&quot;</span> <span class="hljs-attr">data-wcs-osi</span>=<span class="hljs-string">&quot;A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M&quot;</span>&gt;</span>Buy now (click me)<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;module&quot;</span>&gt;</span><span class="language-javascript">
   <span class="hljs-keyword">const</span> logTarget = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;logTarget&#x27;</span>);
-  <span class="hljs-keyword">const</span> <span class="hljs-title function_">log</span> = (<span class="hljs-params">message</span>) =&gt; logTarget.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">`<span class="hljs-subst">${logTarget.innerHTML}</span>&lt;br&gt;<span class="hljs-subst">${message}</span>`</span>;
+  <span class="hljs-keyword">const</span> <span class="hljs-title function_">log</span> = (<span class="hljs-params">...messages</span>) =&gt; logTarget.<span class="hljs-property">innerHTML</span> = <span class="hljs-string">`<span class="hljs-subst">${logTarget.innerHTML}</span>&lt;br&gt;<span class="hljs-subst">${messages.join(<span class="hljs-string">&#x27; &#x27;</span>)}</span>`</span>;
   <span class="hljs-keyword">const</span> a = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementById</span>(<span class="hljs-string">&#x27;co2&#x27;</span>);
   a.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;wcms:placeholder:pending&#x27;</span>, <span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;placeholder pending&#x27;</span>));
   a.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;wcms:placeholder:resolved&#x27;</span>, <span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;placeholder resolved&#x27;</span>));
@@ -225,7 +225,7 @@
   a.<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;click&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">e</span>) =&gt;</span> {
     e.<span class="hljs-title function_">preventDefault</span>();
     e.<span class="hljs-title function_">stopPropagation</span>();
-    <span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;checkout link is clicked&#x27;</span>);
+    <span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;checkout link is clicked: &#x27;</span>, e.<span class="hljs-property">target</span>.<span class="hljs-property">href</span>);
   });
   a.<span class="hljs-property">addEvent</span>
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>

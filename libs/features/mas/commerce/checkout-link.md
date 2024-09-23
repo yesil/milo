@@ -31,9 +31,9 @@ This is a functional **buy now** button: <a href="#" is="checkout-link" data-wcs
 | `data-checkout-workflow-step`| [workflow step](https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=businessservices&title=UCv3+Link+Creation+Guide#UCv3LinkCreationGuide-RegularWorkflow) to land on on the unified checkout page|     email          |     `false`     |
 | `data-extra-options`         | additional query params to append to the url, see: [Table of public query params](https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=businessservices&title=UCv3+Link+Creation+Guide#UCv3LinkCreationGuide-Tableofpublicqueryparams)|        {}       |   `false`       |
 | `data-ims-country`           | the ims country to code of the user if signed in, overrides the locale country in the generated checkout url           |              |   `false`       |
-| `data-perpetual`             | whether this is a perpetual offer `true\|false`             |               |          |
-| `data-promotion-code`        | Flex promotion code, if applicable        |               |          |
-| `data-quantity`              | Quantity of the offer to purchase              |               |          |
+| `data-perpetual`             | whether this is a perpetual offer `true\|false`             |               |        `false`  |
+| `data-promotion-code`        | Flex promotion code, if applicable        |               |        `false`  |
+| `data-quantity`              | Quantity of the offer to purchase              |    1           |     `false`     |
 | `data-entitlement`           | `entitlement` flag for client side interpretation           |    `false`           |          `false` |
 | `data-upgrade`               | `upgrade` flag for client side interpretation               |     `false`          |  `false`        |
 | `data-modal`                 | `modal` flag for client side interpretation                 |     `false`          |      `false`    |
