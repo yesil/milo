@@ -119,6 +119,9 @@ Two photoshop and three acrobat pro single apps (TEAMS):
 
 
 ## Events
+::: warning
+**Note**: Event names with `wcms:placeholder` prefix can be subject to change.
+:::
 
 | Event     | Description                       |
 |-----------|-----------------------------------|

@@ -41,3 +41,16 @@ th {
 tr:nth-child(even) {
   background-color: #f9f9f9;
 }
+
+/* Custom Containers */
+.warning {
+  padding: 15px;
+  background-color: #fff3cd;
+  border-left: 6px solid #ffeeba;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.warning p {
+  margin: 0;
+}
