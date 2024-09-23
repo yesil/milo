@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Custom Element Documentation</title>
+  <!-- Include your custom element script as an ES6 module -->
+  <script src="../../../features/spectrum-web-components/dist/theme.js" type="module"></script>
+  <script src="../../../features/spectrum-web-components/dist/button.js" type="module"></script>
+  <script type="module" src="../../../deps/mas/mas.js"></script>
+  <!-- Include Highlight.js stylesheet for syntax highlighting -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+  <!-- Include any additional stylesheets -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<sp-theme color="light" scale="medium">
+<h1>checkout-link</h1>
+<p>This customized built-in element renders a checkout link supporting most of the features documented at <a href="https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=businessservices&amp;title=UCv3+Link+Creation+Guide">https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=businessservices&amp;title=UCv3+Link+Creation+Guide</a></p>
+<p>Behind the scene, it uses <a href="https://git.corp.adobe.com/PandoraUI/commerce-core">https://git.corp.adobe.com/PandoraUI/commerce-core</a> to generate the checkout url.</p>
+<p>It requires an Offer Selector ID.</p>
+<h2>Offer Selector ID <br></h2>
+<p>AOS generated a stable reference for a set of natural keys allowing to retrieve a specific offer whose offer ID can change over time.</p>
+<p><a href="https://developers.corp.adobe.com/aos/docs/guide/apis/api.yaml#/paths/offer_selectors/post">API: Create an offer selector</a></p>
+<h2>Example <br></h2>
+<pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">is</span>=<span class="hljs-string">&quot;checkout-link&quot;</span> <span class="hljs-attr">data-wcs-osi</span>=<span class="hljs-string">&quot;A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M&quot;</span>&gt;</span>Buy now<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
+<h3>Demo<br></h3>
+<p>This is a functional <strong>buy now</strong> button: <a href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M">Buy now</a></p>
+<h2>Attributes</h2>
+<table>
+<thead>
+<tr>
+<th>Attribute</th>
+<th>Description</th>
+<th>Default Value</th>
+<th>Required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>data-wcs-osi</code></td>
+<td>Offer Selector ID, can be multiple, seperated by comma</td>
+<td></td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>data-checkout-workflow</code></td>
+<td>Target checkout workflow to for the generation of checkout urls</td>
+<td>UCv3</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>data-checkout-workflow-step</code></td>
+<td><a href="https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=businessservices&amp;title=UCv3+Link+Creation+Guide#UCv3LinkCreationGuide-RegularWorkflow">workflow step</a></td>
+<td>email</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>data-extra-options</code></td>
+<td>additional query params to append to the url, see: <a href="https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=businessservices&amp;title=UCv3+Link+Creation+Guide#UCv3LinkCreationGuide-Tableofpublicqueryparams">Table of public query params</a></td>
+<td>{}</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>data-ims-country</code></td>
+<td>the ims country to code of the user if signed in, overrides the locale country in the generated checkout url</td>
+<td></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>data-perpetual</code></td>
+<td>whether this is a perpetual offer <code>true|false</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>data-promotion-code</code></td>
+<td>Flex promotion code, if applicable</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>data-quantity</code></td>
+<td>Quantity of the offer to purchase</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>data-entitlement</code></td>
+<td><code>entitlement</code> flag for client side interpretation</td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>data-upgrade</code></td>
+<td><code>upgrade</code> flag for client side interpretation</td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>data-modal</code></td>
+<td><code>modal</code> flag for client side interpretation</td>
+<td><code>false</code></td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<h2>Examples <br></h2>
+<h2>Custom Workflow Step</h2>
+<pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">is</span>=<span class="hljs-string">&quot;checkout-link&quot;</span> <span class="hljs-attr">data-wcs-osi</span>=<span class="hljs-string">&quot;A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M&quot;</span> <span class="hljs-attr">data-checkout-workflow-step</span>=<span class="hljs-string">&quot;recommendation&quot;</span>&gt;</span>Buy now<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
+<h3>Demo<br></h3>
+<p><a href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M" data-checkout-workflow-step="recommendation">Buy now</a></p>
+<h2>Multiple Quantities</h2>
+<p>Two photoshop and three acrobat pro single apps (TEAMS):</p>
+<pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">is</span>=<span class="hljs-string">&quot;checkout-link&quot;</span> <span class="hljs-attr">data-wcs-osi</span>=<span class="hljs-string">&quot;yHKQJK2VOMSY5bINgg7oa2ov9RnmnU1oJe4NOg4QTYI,vV01ci-KLH6hYdRfUKMBFx009hdpxZcIRG1-BY_PutE&quot;</span> <span class="hljs-attr">data-quantity</span>=<span class="hljs-string">&quot;2,3&quot;</span>&gt;</span>Buy now<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
+<h3>Demo<br></h3>
+<p><a href="#" is="checkout-link" data-wcs-osi="yHKQJK2VOMSY5bINgg7oa2ov9RnmnU1oJe4NOg4QTYI,vV01ci-KLH6hYdRfUKMBFx009hdpxZcIRG1-BY_PutE" data-quantity="2,3">Buy now</a></p>
+<h2>Custom query params</h2>
+<pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">is</span>=<span class="hljs-string">&quot;checkout-link&quot;</span> <span class="hljs-attr">data-wcs-osi</span>=<span class="hljs-string">&quot;A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M&quot;</span> <span class="hljs-attr">data-extra-options</span>=<span class="hljs-string">&quot;{<span class="hljs-symbol">&amp;quot;</span>promoid<span class="hljs-symbol">&amp;quot;</span>:<span class="hljs-symbol">&amp;quot;</span>promo12345<span class="hljs-symbol">&amp;quot;</span>,<span class="hljs-symbol">&amp;quot;</span>mv<span class="hljs-symbol">&amp;quot;</span>:1,<span class="hljs-symbol">&amp;quot;</span>mv2<span class="hljs-symbol">&amp;quot;</span>:2}&quot;</span>&gt;</span>Buy now<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
+<h3>Demo<br></h3>
+<p><a href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M" data-extra-options="{&quot;promoid&quot;:&quot;promo12345&quot;,&quot;mv&quot;:1,&quot;mv2&quot;:2}">Buy now</a></p>
+<h2>IMS Country</h2>
+<pre><code class="hljs language-html"><span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;#&quot;</span> <span class="hljs-attr">is</span>=<span class="hljs-string">&quot;checkout-link&quot;</span> <span class="hljs-attr">data-wcs-osi</span>=<span class="hljs-string">&quot;A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M&quot;</span> <span class="hljs-attr">data-ims-country</span>=<span class="hljs-string">&quot;JP&quot;</span>&gt;</span>Buy now<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+</code></pre>
+<h3>Demo<br></h3>
+<p><a href="#" is="checkout-link" data-wcs-osi="A1xn6EL4pK93bWjM8flffQpfEL-bnvtoQKQAvkx574M" data-ims-country="JP">Buy now</a></p>
+
+</sp-theme>
+</body>
+</html>
