@@ -119,9 +119,6 @@ Two photoshop and three acrobat pro single apps (TEAMS):
 
 
 ## Events
-::: warning
-**Note**: Event names with `wcms:placeholder` prefix can be subject to change.
-:::
 
 | Event     | Description                       |
 |-----------|-----------------------------------|
@@ -129,6 +126,13 @@ Two photoshop and three acrobat pro single apps (TEAMS):
 | `wcms:placeholder:resolved`| fires when the offer is successfully  resolved  |
 | `wcms:placeholder:failed`  | fires when the offer is could not be found or fetched     |
 | `click`   | native click event on the `a`  element      |
+
+<br>
+
+::: warning
+**Note**: Event names with `wcms:placeholder` prefix can be subject to change.
+:::
+
 
 ### Example <br>
 
