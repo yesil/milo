@@ -1,5 +1,6 @@
 # checkout-link
 This customized built-in element renders a checkout link supporting most of the features documented at https://wiki.corp.adobe.com/pages/viewpage.action?spaceKey=businessservices&title=UCv3+Link+Creation+Guide.
+Sometimes a checkout-link can be also referred as placeholder as it can be used as an inline link resolving at runtime.
 
 Behind the scene, it uses https://git.corp.adobe.com/PandoraUI/commerce-core to generate the checkout url.
 
@@ -127,7 +128,10 @@ Two photoshop and three acrobat pro single apps (TEAMS):
 | `wcms:placeholder:failed`  | fires when the offer is could not be found or fetched     |
 | `click`   | native click event on the `a`  element      |
 
+
 <br>
+
+For each events except `click`, the following css classes are toggled on the element: `placeholder-pending`, `placeholder-resolved`, `placeholder-failed`.
 
 ::: warning
 **Note**: Event names with `wcms:placeholder` prefix can be subject to change.
