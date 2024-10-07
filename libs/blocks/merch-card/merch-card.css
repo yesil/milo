@@ -8,6 +8,10 @@ div[class*="-merch-card"] > div,
    grid-column: 1 / -1;
  }
 
+ merch-card {
+  content-visibility: auto;
+ }
+
  merch-card .action-area, merch-card div[slot="footer"] > p {
   display: contents;
  }
