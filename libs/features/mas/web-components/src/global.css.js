@@ -318,10 +318,6 @@ merch-card a.primary-link {
     color: var(--spectrum-global-color-blue-700);
 }
 
-merch-card a.primary-link {
-    color: var(--spectrum-global-color-blue-700);
-}
-
 [slot="cci-footer"] p,
 [slot="cct-footer"] p,
 [slot="cce-footer"] p {
