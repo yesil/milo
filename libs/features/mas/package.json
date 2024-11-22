@@ -1,19 +1,16 @@
 {
-    "name": "@adobecom/mas-platform",
-    "version": "0.0.1",
+    "name": "@adobecom/mas",
+    "version": "0.1.0",
     "type": "module",
-    "main": "libs/mas.js",
+    "main": "dist/mas.js",
     "private": true,
-    "workspaces": [
-        "commerce",
-        "mas",
-        "web-components"
-    ],
     "scripts": {
         "lint": "eslint --fix",
-        "test": "npm run test:ci --workspaces",
-        "build": "npm run build --workspaces",
-        "build:docs": "./build-docs.sh"
+        "build": "npm run test:ci && npm run build:bundle",
+        "build:docs": "./build-docs.sh",
+        "build:bundle": "node ./build.mjs",
+        "test": "wtr --config ./web-test-runner.config.mjs --coverage --watch --debug",
+        "test:ci": "wtr --config ./web-test-runner.config.mjs --coverage"
     },
     "dependencies": {
         "@spectrum-web-components/action-button": "^0.46.0",

@@ -73,9 +73,9 @@ const htmlTemplate = `
       }
   </script>
   <!-- Include your custom element script as an ES6 module -->
-  <script src="../../../features/spectrum-web-components/dist/theme.js" type="module"></script>
-  <script src="../../../features/spectrum-web-components/dist/action-button.js" type="module"></script>
-  <script src="../../../features/spectrum-web-components/dist/button.js" type="module"></script>
+  <script src="../../features/spectrum-web-components/dist/theme.js" type="module"></script>
+  <script src="../../features/spectrum-web-components/dist/action-button.js" type="module"></script>
+  <script src="../../features/spectrum-web-components/dist/button.js" type="module"></script>
   <script type="module" src="../mas/dist/mas.js"></script>
 
   <script type="module">
@@ -90,7 +90,7 @@ const htmlTemplate = `
   </script>
   <link rel="stylesheet" href="https://use.typekit.net/hah7vzn.css">
   <!-- Include Highlight.js stylesheet for syntax highlighting -->
-  <link rel="stylesheet" href="../../../styles/styles.css">
+  <link rel="stylesheet" href="../../styles/styles.css">
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
   <!-- Include any additional stylesheets -->
   <link rel="stylesheet" href="styles.css">
