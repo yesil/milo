@@ -1,6 +1,6 @@
 # Preview Indexer
 
-A GitHub Actions-based system that automatically maintains preview indexes for DA (Document Authoring) sites by monitoring and processing Helix admin logs.
+A GitHub Actions-based system that automatically maintains preview indexes for DA and SharePoint sites by monitoring and processing Helix admin logs.
 
 ## Overview
 
@@ -16,31 +16,6 @@ The Preview Indexer tracks content preview activity across regional sites and ma
 - **Retry Logic**: Built-in retry mechanism for failed API requests
 - **Concurrent Processing**: Supports parallel processing of multiple sites
 
-## Architecture
-
-### Components
-
-```
-.github/workflows/preview-indexer/
-├── incremental.js              # Incremental update entry point
-├── full-index.js               # Full index generation entry point
-├── package.json                # Node.js dependencies
-└── internal/
-    ├── indexer.js              # Core indexing logic
-    ├── config.js               # Site configuration management
-    ├── da-client.js            # DA API client
-    ├── helix-client.js         # Helix admin API client
-    ├── indexer-state.js        # State persistence
-    └── utils.js                # Shared utilities
-```
-
-### State Directory
-
-```
-preview-indexer/state/
-└── last-runs.json              # Checkpoint data for incremental runs
-```
-
 ## GitHub Actions Workflows
 
 ### 1. Incremental Preview Indexer
@@ -48,17 +23,24 @@ preview-indexer/state/
 
 Updates preview indexes based on recent activity from Helix admin logs.
 
-**Triggers**: Manual workflow dispatch
+**Triggers**: 
+- Manual workflow dispatch (`workflow_dispatch`)
+- Repository dispatch event (`repository_dispatch`) with type `preview-indexer-incremental`
+Equivalent SharePoint triggers are also created.
+An external trigger from Adobe I/O Runtime runs this workflow every 15 minutes.
+This is necessary because the GitHub scheduler may not reliably execute at precise intervals.
+The recommendation is to use an external cron job to trigger the workflow via
+one of the manual events (repository_dispatch or workflow_dispatch).
 
 **Inputs**:
-- `lastRunISOFrom` (optional): Start timestamp for log fetching
-- `lastRunISOTo` (optional): End timestamp for log fetching
+- `lastRunISOFrom` (optional): Start timestamp in GMT for fetching helix log format YYYY-MM-DDT24HH:MI:SS.SSSZ e.g 2025-11-19T18:51:41.007Z
+- `lastRunISOTo` (optional): End timestamp in GMT for fetching helix log format YYYY-MM-DDT24HH:MI:SS.SSSZ e.g 2025-11-19T18:51:41.007Z
 - `site` (optional): Specific site to process (e.g., da-bacom)
 - `siteRegions` (optional): Comma-separated regional paths (e.g., /be_en/, /ch_fr/, /lu_de/)
 
 **Features**:
 - Uses GitHub Actions cache to persist state across runs
-- Prevents concurrent runs using workflow status checks
+- Prevents concurrent runs using workflow concurrency group
 - Automatically fetches logs since last successful run
 - Merges new preview paths with existing index data
 
@@ -216,7 +198,7 @@ node --env-file=../../../.env incremental.js
 
 ```bash
 SITE="da-bacom" \
-SITE_REGION_PATHS="/ar/,/br/" \
+SITE_REGION_PATHS="ar,br" \
 node --env-file=.env .github/workflows/preview-indexer/full-index.js
 ```
 
@@ -249,7 +231,7 @@ Example `act-event.json`:
     "lastRunISOFrom": "2025-10-19T20:30:35.751Z",
     "lastRunISOTo": "2025-10-20T17:22:06.988Z",
     "site": "da-bacom",
-    "siteRegions": "/ar/,/br/"
+    "siteRegions": "ar,ro"
   }
 }
 ```
@@ -260,7 +242,7 @@ Example `act-event.json`:
   "event_name": "workflow_dispatch",
   "inputs": {
     "site": "da-bacom",
-    "siteRegionPaths": "/ar/,/br/"
+    "siteRegionPaths": "ar,ro"
   }
 }
 ```

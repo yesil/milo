@@ -1,12 +1,14 @@
 import PQueue from 'p-queue';
 import { getLingoConfigMap } from './internal/utils.js';
 import { initIndexer } from './internal/indexer.js';
+import { saveJsonToDa, getJsonFromDa } from './internal/da-client.js';
 
 const ORG = 'adobecom';
 
 const { env } = process;
 const {
   PREVIEW_INDEXER_REPOS,
+  SITE_REGION_PATHS,
   SITE,
 } = env;
 
@@ -19,8 +21,17 @@ const filteredRepos = reposToProcess.filter((repo) => !SITE || repo === SITE);
 for (const repo of filteredRepos) {
   await queue.add(async () => {
     console.log(`Initiating incremental index for ${ORG}/${repo}`);
-    const indexer = await initIndexer(ORG, repo, lingoConfigMap);
-    return indexer.incremental();
+    const indexer = await initIndexer(
+      ORG,
+      repo,
+      lingoConfigMap,
+      {
+        savePreviewIndexJson: saveJsonToDa,
+        getPreviewIndexJson: getJsonFromDa,
+      }
+    );
+    const siteRegionPaths = indexer.normalizeRegionPaths(SITE_REGION_PATHS);
+    return indexer.incremental(siteRegionPaths);
   });
 }
 

@@ -563,6 +563,7 @@
   }
   
   .text-block [class*="heading-"] {
+    font-family: "Adobe Clean Black", var(--body-font-family);
     font-weight: 900;
   }
 
@@ -654,4 +655,10 @@
       border-radius: 40px;
     }
   }
+}
+
+.link-list a {
+  display: inline-block;
+  margin-left: 10px;
+  margin-right: 10px;
 }

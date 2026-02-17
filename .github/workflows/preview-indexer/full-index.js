@@ -1,5 +1,6 @@
 import { initIndexer } from './internal/indexer.js';
 import { getLingoConfigMap } from './internal/utils.js';
+import { saveJsonToDa, getJsonFromDa } from './internal/da-client.js';
 
 const { env } = process;
 const {
@@ -12,11 +13,19 @@ const {
 const ORG = PREVIEW_INDEXER_ORG || 'adobecom';
 
 const siteToProcess = PREVIEW_INDEXER_REPOS?.split(',').map((path) => path.trim()).find((p) => p === SITE);
-const siteRegionPaths = SITE_REGION_PATHS?.split(',').map((path) => path.trim()).filter(Boolean);
 const lingoConfigMap = await getLingoConfigMap();
 
 if (siteToProcess) {
-  const indexer = await initIndexer(ORG, siteToProcess, lingoConfigMap);
+  const indexer = await initIndexer(
+    ORG,
+    siteToProcess,
+    lingoConfigMap,
+    {
+      savePreviewIndexJson: saveJsonToDa,
+      getPreviewIndexJson: getJsonFromDa
+    }
+  );
+  const siteRegionPaths = indexer.normalizeRegionPaths(SITE_REGION_PATHS);
   await indexer.full(siteRegionPaths);
 } else {
   console.error('Mandatory fields are missing: site and siteRegionPaths');
