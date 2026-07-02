@@ -6,6 +6,9 @@ import "https://yesil.github.io/experience-elements/src/custom-elements/core/spe
 import "https://yesil.github.io/experience-elements/src/custom-elements/core/ee-list/ee-list.js";
 import "https://yesil.github.io/experience-elements/src/custom-elements/core/ee-list/ee-list-item.js";
 import "https://yesil.github.io/experience-elements/src/custom-elements/acom/acom-aside.js";
+import "https://yesil.github.io/experience-elements/src/custom-elements/upw/paywall-container.js";
+import "https://yesil.github.io/experience-elements/src/custom-elements/commerce/checkout-button.js";
+import "https://yesil.github.io/experience-elements/src/custom-elements/merch-card/merch-mnemonic.js";
 
 import { loadScript } from '../../utils/utils.js';
 
