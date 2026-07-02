@@ -169,6 +169,7 @@ const AUTO_BLOCKS = [
   { 'merch-card-autoblock': 'mas.adobe.com/studio.html', styles: false },
   { m7: '/creativecloud/business-plans', styles: false },
   { m7: '/creativecloud/education-plans', styles: false },
+  { 'experience-element': 'd17rmhdnq5yt28.cloudfront.net', styles: false },
 ];
 const DO_NOT_INLINE = [
   'accordion',
