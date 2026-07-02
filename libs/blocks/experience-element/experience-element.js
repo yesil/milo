@@ -1,3 +1,12 @@
+import "https://yesil.github.io/experience-elements/dist/swc.js";
+import "https://yesil.github.io/experience-elements/src/custom-elements/ee-media/ee-media.js";
+import "https://yesil.github.io/experience-elements/src/custom-elements/core/ee-reference.js";
+import "https://yesil.github.io/experience-elements/src/custom-elements/core/ee-content.js";
+import "https://yesil.github.io/experience-elements/src/custom-elements/core/spectrum-toggle.js";
+import "https://yesil.github.io/experience-elements/src/custom-elements/core/ee-list/ee-list.js";
+import "https://yesil.github.io/experience-elements/src/custom-elements/core/ee-list/ee-list-item.js";
+import "https://yesil.github.io/experience-elements/src/custom-elements/acom/acom-aside.js";
+
 import { loadScript } from '../../utils/utils.js';
 
 const LANA_OPTIONS = {
@@ -22,7 +31,7 @@ export default async function init(el) {
   try {
     const res = await fetch(href);
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-    el.outerHTML = await res.text();
+    el.parentElement.outerHTML = await res.text();
   } catch (e) {
     window.lana?.log(`Failed to load experience element ${href}: ${e.message}`, LANA_OPTIONS);
   }
