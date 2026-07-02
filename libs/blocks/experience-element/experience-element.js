@@ -1,15 +1,3 @@
-import "https://yesil.github.io/experience-elements/dist/swc.js";
-import "https://yesil.github.io/experience-elements/src/custom-elements/ee-media/ee-media.js";
-import "https://yesil.github.io/experience-elements/src/custom-elements/core/ee-reference.js";
-import "https://yesil.github.io/experience-elements/src/custom-elements/core/ee-content.js";
-import "https://yesil.github.io/experience-elements/src/custom-elements/core/spectrum-toggle.js";
-import "https://yesil.github.io/experience-elements/src/custom-elements/core/ee-list/ee-list.js";
-import "https://yesil.github.io/experience-elements/src/custom-elements/core/ee-list/ee-list-item.js";
-import "https://yesil.github.io/experience-elements/src/custom-elements/acom/acom-aside.js";
-import "https://yesil.github.io/experience-elements/src/custom-elements/upw/paywall-container.js";
-import "https://yesil.github.io/experience-elements/src/custom-elements/commerce/checkout-button.js";
-import "https://yesil.github.io/experience-elements/src/custom-elements/merch-card/merch-mnemonic.js";
-
 import { loadScript } from '../../utils/utils.js';
 
 const LANA_OPTIONS = {
@@ -20,6 +8,31 @@ const LANA_OPTIONS = {
 
 const RUNTIME_PATH = '/api/user/library.js';
 const RUNTIME_ORIGIN = 'https://d17rmhdnq5yt28.cloudfront.net';
+const EXPERIENCE_ELEMENTS_ORIGIN = window.location.hostname === 'localhost'
+  ? 'http://localhost:3001'
+  : 'https://yesil.github.io/experience-elements';
+const EXPERIENCE_ELEMENTS_IMPORTS = [
+  '/dist/swc.js',
+  '/src/custom-elements/ee-media/ee-media.js',
+  '/src/custom-elements/core/ee-reference.js',
+  '/src/custom-elements/core/ee-content.js',
+  '/src/custom-elements/core/spectrum-toggle.js',
+  '/src/custom-elements/core/ee-list/ee-list.js',
+  '/src/custom-elements/core/ee-list/ee-list-item.js',
+  '/src/custom-elements/acom/acom-aside.js',
+  '/src/custom-elements/upw/paywall-container.js',
+  '/src/custom-elements/commerce/checkout-button.js',
+  '/src/custom-elements/merch-card/merch-mnemonic.js',
+];
+
+let experienceElementsImportsPromise;
+
+function loadExperienceElementsImports() {
+  experienceElementsImportsPromise ??= Promise.all(
+    EXPERIENCE_ELEMENTS_IMPORTS.map((path) => import(`${EXPERIENCE_ELEMENTS_ORIGIN}${path}`)),
+  );
+  return experienceElementsImportsPromise;
+}
 
 function runtimeUrl() {
   return window.location.hostname === 'localhost'
@@ -28,7 +41,7 @@ function runtimeUrl() {
 }
 
 export default async function init(el) {
-  // loadScript dedupes by src, so this runs once per page across multiple elements.
+  await loadExperienceElementsImports();
   loadScript(runtimeUrl(), 'module');
   const { href } = el;
   try {
