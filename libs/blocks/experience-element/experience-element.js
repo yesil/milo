@@ -58,7 +58,10 @@ export default async function init(el) {
   try {
     const res = await fetch(href);
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-    el.parentElement.outerHTML = await res.text();
+    const div = document.createElement('div');
+    div.style.margin = '20px 0';
+    div.innerHTML = await res.text();
+    el.parentElement.replaceWith(div);
   } catch (e) {
     window.lana?.log(`Failed to load experience element ${href}: ${e.message}`, LANA_OPTIONS);
   }
