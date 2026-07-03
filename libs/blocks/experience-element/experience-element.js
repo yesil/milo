@@ -1,3 +1,5 @@
+import 'https://yesil.github.io/experience-elements/dist/swc.js';
+
 import { loadScript } from '../../utils/utils.js';
 
 const LANA_OPTIONS = {
@@ -11,8 +13,10 @@ const RUNTIME_ORIGIN = 'https://d17rmhdnq5yt28.cloudfront.net';
 const EXPERIENCE_ELEMENTS_ORIGIN = window.location.hostname === 'localhost'
   ? 'http://localhost:3001'
   : 'https://yesil.github.io/experience-elements';
+
+const runtimeElement = import(`${EXPERIENCE_ELEMENTS_ORIGIN}/src/runtime/experience-element.js`);
+
 const EXPERIENCE_ELEMENTS_IMPORTS = [
-  '/dist/swc.js',
   '/src/custom-elements/ee-media/ee-media.js',
   '/src/custom-elements/core/ee-reference.js',
   '/src/custom-elements/core/ee-content.js',
@@ -28,9 +32,9 @@ const EXPERIENCE_ELEMENTS_IMPORTS = [
 let experienceElementsImportsPromise;
 
 function loadExperienceElementsImports() {
-  experienceElementsImportsPromise ??= Promise.all(
+  experienceElementsImportsPromise ??= runtimeElement.then(Promise.all(
     EXPERIENCE_ELEMENTS_IMPORTS.map((path) => import(`${EXPERIENCE_ELEMENTS_ORIGIN}${path}`)),
-  );
+  ));
   return experienceElementsImportsPromise;
 }
 
