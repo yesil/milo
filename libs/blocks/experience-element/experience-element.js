@@ -26,6 +26,7 @@ const EXPERIENCE_ELEMENTS_IMPORTS = [
   '/src/custom-elements/acom/acom-aside.js',
   '/src/custom-elements/upw/paywall-container.js',
   '/src/custom-elements/commerce/checkout-button.js',
+  '/src/custom-elements/commerce/inline-price.js',
   '/src/custom-elements/merch-card/merch-mnemonic.js',
 ];
 
@@ -46,6 +47,12 @@ function runtimeUrl() {
 
 export default async function init(el) {
   await loadExperienceElementsImports();
+  // add mas-commerce-service to the page
+  if (!document.querySelector('mas-commerce-service')) {
+    const masCommerceService = document.createElement('mas-commerce-service');
+    masCommerceService.setAttribute('data-mas-ff-defaults', 'on');
+    document.head.appendChild(masCommerceService);
+  }
   loadScript(runtimeUrl(), 'module');
   const { href } = el;
   try {
